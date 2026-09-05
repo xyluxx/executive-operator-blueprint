@@ -1,0 +1,50 @@
+operating_mode: single-agent
+hosting: local-desktop
+# These are requests only. An installer must resolve, configure, and verify each one before calling it active.
+capability_packs:
+  core-operator: requested
+  operator-control: not-requested
+  executive-assistant: requested
+  documents-and-research: requested
+  artifact-storage: not-requested
+  secure-credentials: not-requested
+  crm: not-requested
+  marketing-and-seo: not-requested
+  composio-connectors: not-requested
+  google-sheets: not-requested
+  public-relations: not-requested
+  website-reliability: not-requested
+  infrastructure: not-requested
+  coding-specialists: not-requested
+  recruiting: not-requested
+  travel: not-requested
+  finance-visibility: not-requested
+  design: not-requested
+  leadership-operations: not-requested
+  managed-agent-team: not-requested
+channels:
+  primary: desktop
+  enabled: [desktop]
+notifications:
+  primary_route: desktop
+  failure_route: desktop
+model_policy:
+  main_provider: null
+  main_model: null
+  fallback_provider: null
+  fallback_model: null
+  monthly_limit: null
+privacy:
+  data_classes: [ordinary-business]
+  allowed_regions: []
+  retention_days: null
+  regulated: false
+approvals:
+  external_messages: exact-action
+  invitations: exact-action
+  spending: exact-action
+  campaign_changes: exact-action
+  production_deployments: exact-action
+  credential_changes: exact-action
+  bulk_crm_writes: exact-action
+  deletion: exact-action

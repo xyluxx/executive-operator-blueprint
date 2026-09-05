@@ -1,0 +1,12 @@
+version: 1.0.0
+optional_integrations:
+  composio:
+    configured: false
+    enabled: false
+    inventory: optional-skills/composio-integration/SKILL.md
+    gate: Current timestamped official pricing, plan, tool and trigger limits, scopes, write behavior, and data policy evidence required at setup.
+  google-sheets:
+    configured: false
+    enabled: false
+    inventory: tools/integration-contract/integration_contract.py
+    gate: Exact account, spreadsheet, range, permissions, approval, idempotency, readback, revoke, and disable proof required.

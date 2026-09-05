@@ -1,0 +1,117 @@
+{
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/install.answers.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Executive Operator Blueprint Installation Answers",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "profile_name", "install_mode", "hosting", "operating_mode", "surfaces", "channels", "task_system", "memory", "tools", "capability_packs", "additional_integrations", "credential_gates", "notification_policy", "privacy", "credentials", "budgets", "approval_policy", "backup"],
+  "properties": {
+    "version": {"const": "1.0.0"},
+    "profile_name": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,62}[a-z0-9]$"},
+    "install_mode": {"enum": ["new-profile", "update-profile"]},
+    "hosting": {"enum": ["local-desktop", "always-on-server", "regulated-dedicated-environment"]},
+    "operating_mode": {"enum": ["single-agent", "managed-team"]},
+    "surfaces": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+    "channels": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "task_system": {
+      "type": "object", "additionalProperties": false,
+      "required": ["enabled", "canonical_store", "board", "manual_unassigned_tasks", "parked_mapping", "auto_decompose"],
+      "properties": {
+        "enabled": {"const": true},
+        "canonical_store": {"const": "hermes-kanban"},
+        "board": {"const": "default"},
+        "manual_unassigned_tasks": {"const": true},
+        "parked_mapping": {"const": "todo-with-checkpoint"},
+        "auto_decompose": {"const": false}
+      }
+    },
+    "memory": {
+      "type": "object", "additionalProperties": false,
+      "required": ["enabled", "provider", "retention_policy", "deletion_policy"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "provider": {"type": ["string", "null"]},
+        "retention_policy": {"type": ["string", "null"]},
+        "deletion_policy": {"type": ["string", "null"]}
+      }
+    },
+    "tools": {
+      "type": "object", "additionalProperties": {"enum": ["enabled", "disabled", "optional", "planned"]}
+    },
+    "capability_packs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["core-operator", "operator-control", "executive-assistant", "documents-and-research", "artifact-storage", "secure-credentials", "crm", "marketing-and-seo", "composio-connectors", "google-sheets", "public-relations", "website-reliability", "infrastructure", "coding-specialists", "recruiting", "travel", "finance-visibility", "design", "leadership-operations", "managed-agent-team"],
+      "properties": {
+        "core-operator": {"const": "requested"},
+        "operator-control": {"enum": ["requested", "not-requested", "planned"]},
+        "executive-assistant": {"enum": ["requested", "not-requested", "planned"]},
+        "documents-and-research": {"enum": ["requested", "not-requested", "planned"]},
+        "artifact-storage": {"enum": ["requested", "not-requested", "planned"]},
+        "secure-credentials": {"enum": ["requested", "not-requested", "planned"]},
+        "crm": {"enum": ["requested", "not-requested", "planned"]},
+        "marketing-and-seo": {"enum": ["requested", "not-requested", "planned"]},
+        "composio-connectors": {"enum": ["requested", "not-requested", "planned"]},
+        "google-sheets": {"enum": ["requested", "not-requested", "planned"]},
+        "public-relations": {"enum": ["requested", "not-requested", "planned"]},
+        "website-reliability": {"enum": ["requested", "not-requested", "planned"]},
+        "infrastructure": {"enum": ["requested", "not-requested", "planned"]},
+        "coding-specialists": {"enum": ["requested", "not-requested", "planned"]},
+        "recruiting": {"enum": ["requested", "not-requested", "planned"]},
+        "travel": {"enum": ["requested", "not-requested", "planned"]},
+        "finance-visibility": {"enum": ["requested", "not-requested", "planned"]},
+        "design": {"enum": ["requested", "not-requested", "planned"]},
+        "leadership-operations": {"enum": ["requested", "not-requested", "planned"]},
+        "managed-agent-team": {"enum": ["requested", "not-requested", "planned"]}
+      }
+    },
+    "additional_integrations": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "credential_gates": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "notification_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["primary_route", "failure_route", "quiet_success"],
+      "properties": {
+        "primary_route": {"type": ["string", "null"]},
+        "failure_route": {"type": ["string", "null"]},
+        "quiet_success": {"type": "boolean"}
+      }
+    },
+    "privacy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["regulated_data", "data_residency", "external_model_policy"],
+      "properties": {
+        "regulated_data": {"type": "boolean"},
+        "data_residency": {"type": ["string", "null"]},
+        "external_model_policy": {"type": ["string", "null"]}
+      }
+    },
+    "credentials": {
+      "type": "object", "additionalProperties": false,
+      "required": ["intake_method", "reusable_vault"],
+      "properties": {
+        "intake_method": {"type": ["string", "null"]},
+        "reusable_vault": {"type": "boolean"}
+      }
+    },
+    "budgets": {
+      "type": "object", "additionalProperties": false,
+      "required": ["monthly_model", "monthly_integrations"],
+      "properties": {
+        "monthly_model": {"type": ["number", "null"], "minimum": 0},
+        "monthly_integrations": {"type": ["number", "null"], "minimum": 0}
+      }
+    },
+    "approval_policy": {
+      "type": "object",
+      "additionalProperties": {"enum": ["automatic-internal", "proposal", "exact-action", "never"]}
+    },
+    "backup": {
+      "type": "object", "additionalProperties": false,
+      "required": ["destination_class", "restore_test_required"],
+      "properties": {
+        "destination_class": {"type": "string"},
+        "restore_test_required": {"type": "boolean"}
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+primary_route: owner-primary
+failure_route: owner-urgent
+scheduled_brief_route: owner-primary
+notify:
+  required_decision: true
+  approaching_deadline: true
+  late_promised_response: true
+  failed_automatic_recovery: true
+  material_opportunity_or_reply: true
+  security_or_credential_problem: true
+silent:
+  healthy_check: true
+  unchanged_state: true
+  duplicate_event: true
+  false_alarm: true
+  verified_successful_routine_recovery: true
+deduplication:
+  enabled: true
+  key_fields: [event_type, target_id, source_event_id]
+acknowledgment:
+  required_for: [security_or_credential_problem, failed_automatic_recovery]
+fallback:
+  activate_after_seconds: 300
+  route: owner-urgent

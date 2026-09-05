@@ -1,0 +1,61 @@
+contract_version: "1.0"
+authority: contracts/task-lifecycle.yaml
+human_states:
+  - active
+  - waiting
+  - blocked
+  - parked
+  - partial
+  - done
+native_statuses:
+  - triage
+  - todo
+  - ready
+  - running
+  - blocked
+  - scheduled
+  - review
+  - done
+  - archived
+dispositions:
+  - cancelled
+  - superseded
+  - dropped
+  - exception-closed
+verification_results:
+  - pass
+  - fail
+  - blocked
+  - inconclusive
+external_effect_results:
+  - confirmed-success
+  - confirmed-failure
+  - unknown
+mappings:
+  active:
+    native_statuses: [triage, todo, ready, running, scheduled, review]
+  waiting:
+    native_status: blocked
+    requires: [waiting_party, next_check]
+  blocked:
+    native_status: blocked
+    requires: [blocker, owner, wake_condition]
+  parked:
+    native_status: todo
+    requires: [checkpoint]
+  partial:
+    native_statuses: [todo, ready, running, blocked, scheduled, review]
+    requires: [satisfied_criteria, outstanding_criteria, resume_point]
+    closes_task: false
+  done:
+    native_status: done
+    requires: [acceptance]
+  dispositions:
+    native_status: archived
+    requires: [disposition, reason]
+invariants:
+  canonical_task_store: hermes-kanban
+  unassigned_dispatch: false
+  manual_unassigned_editable: true
+  focus_changes_native_status: false
+  worker_submission_status: review

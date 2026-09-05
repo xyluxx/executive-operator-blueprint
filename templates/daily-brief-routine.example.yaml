@@ -1,0 +1,36 @@
+schema_version: "1.0"
+routine_id: weekday-executive-brief
+schedule:
+  owner: hermes-native-cron
+  enabled: false
+  local_time: "07:30"
+  iana_timezone: America/Chicago
+  daylight_saving_policy: follow-timezone-database
+sources:
+  canonical_tasks: hermes-kanban
+  approved_live_sources_only: true
+sections:
+  - decisions-waiting
+  - todays-commitments
+  - due-outside-follow-ups
+  - slipped-or-newly-at-risk
+  - unresolved-consequential-effects
+empty_policy: stay-silent
+delivery:
+  channel: null
+  deduplication:
+    enabled: true
+    key_fields: [routine_id, scheduled_occurrence, channel, recipient]
+  verification:
+    require_delivery_record_readback: true
+    record_fields: [routine_id, scheduled_occurrence, operation_key, channel, recipient, content_digest, provider_delivery_id, state, created_at, delivered_at, reconciliation]
+task_truth_policy:
+  may_create: false
+  may_close: false
+  may_change_status: false
+  brief_is_task_store: false
+retirement:
+  disable_schedule: true
+  revoke_source_access: true
+  verify_no_future_runs: true
+  retain_delivery_records_under_policy: true

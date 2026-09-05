@@ -1,0 +1,47 @@
+provider: null
+workspace: null
+native_type: mcp
+objects:
+  person:
+    provider_object: null
+    identity_keys: [primary_email]
+  company:
+    provider_object: null
+    identity_keys: [domain]
+  opportunity:
+    provider_object: null
+    identity_keys: []
+  project:
+    provider_object: null
+    identity_keys: []
+  task:
+    provider_object: null
+    identity_keys: []
+  note:
+    provider_object: null
+    identity_keys: []
+permissions:
+  read: []
+  create: []
+  update: []
+  delete: []
+approvals:
+  single_create: exact-action
+  single_update: exact-action
+  bulk_write: exact-action
+  delete: exact-action
+  outbound_message: exact-action
+deduplication:
+  person: primary_email
+  company: domain
+writeback:
+  email: disabled
+  meetings: disabled
+  tasks: disabled
+contract_tests:
+  metadata: pending
+  narrow_read: pending
+  safe_create: pending
+  idempotent_retry: pending
+  update_readback: pending
+  disable: pending

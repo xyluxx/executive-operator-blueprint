@@ -1,0 +1,19 @@
+contract_version: "1.0"
+contract_class: compact
+durable_task: true
+work_class: internal-read-only
+consequences:
+  external_write: false
+  delegated: false
+  dependency: false
+  sensitive_data: false
+  material_cost: false
+  cancellation_risk: false
+  long_lived_follow_up: false
+risk_flags: []
+outcome: Confirm the local report title.
+owner: main-operator
+next_action: Read the report heading.
+artifact_or_source: docs/example-report.md
+resume_point: No work started.
+completion_check: Report the exact heading from the source.

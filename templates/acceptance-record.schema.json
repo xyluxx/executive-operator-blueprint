@@ -1,0 +1,10 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema","$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/acceptance-record.schema.json","type":"object","additionalProperties":false,
+  "required":["record_version","acceptance_id","status","disposition","task_id","task_version","requirement_version","artifact_id","artifact_version","target_id","target_version","environment","policy_version","policy_digest","submission_id","worker_id","accepter_id","criterion_results","criteria_digest","evidence_digest","reasons","issued_at","accepted_at","expires_at"],
+  "properties":{
+    "record_version":{"const":"2"},"acceptance_id":{"type":"string","minLength":1},"status":{"enum":["accepted","blocked","inconclusive","exception-closed"]},"disposition":{"enum":["success","open","exception"]},
+    "task_id":{"type":"string","minLength":1},"task_version":{"type":["string","integer"]},"requirement_version":{"type":["string","integer"]},"artifact_id":{"type":"string","minLength":1},"artifact_version":{"type":["string","integer"]},"target_id":{"type":"string","minLength":1},"target_version":{"type":["string","integer"]},
+    "environment":{"type":"object","required":["name","version"],"properties":{"name":{"type":"string","minLength":1},"version":{"type":"string","minLength":1}},"additionalProperties":false},
+    "policy_version":{"type":["string","integer"]},"policy_digest":{"type":"string","pattern":"^[0-9a-f]{64}$"},"submission_id":{"type":"string","minLength":1},"worker_id":{"type":"string","minLength":1},"accepter_id":{"type":"string","minLength":1},"criterion_results":{"type":"array","items":{"type":"string"}},"criteria_digest":{"$ref":"#/$defs/digest"},"evidence_digest":{"$ref":"#/$defs/digest"},"reasons":{"type":"array","items":{"type":"string"}},"issued_at":{"type":"string","format":"date-time"},"accepted_at":{"type":"string","format":"date-time"},"expires_at":{"type":"string","format":"date-time"}
+  },"$defs":{"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"}}
+}

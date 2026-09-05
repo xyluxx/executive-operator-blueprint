@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68,<81"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "executive-operator-secure-credentials"
+version = "1.0.0"
+description = "Private, one-time credential exchange reference utility"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi==0.141.1",
+  "uvicorn==0.52.4",
+  "cryptography==50.0.1",
+  "pydantic==2.13.5",
+  "anyio==4.15.0",
+]
+
+[project.scripts]
+secure-credentials = "secure_credentials.cli:main"
+
+[tool.setuptools.package-data]
+secure_credentials = ["static/*.css", "static/*.js"]

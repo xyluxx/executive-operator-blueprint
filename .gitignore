@@ -1,0 +1,69 @@
+# Python and test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+
+# Root profile secrets and private state
+/.env
+/auth.json
+/memories/
+/sessions/
+/logs/
+/plans/
+/workspace/
+/local/
+/backups/
+/install-state/
+/cron/executions.db
+/state.db*
+/hermes_state.db*
+/response_store.db*
+/memory_store.db*
+/gateway.pid
+/gateway_state.json
+/processes.json
+/auth.lock
+/active_profile
+/.update_check
+/.hermes_history
+/errors.log
+
+# Root caches
+/image_cache/
+/audio_cache/
+/document_cache/
+/browser_screenshots/
+/cache/
+/*_cache/
+
+# Runtime databases and sensitive files anywhere
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.key
+*.pem
+*.claim.json
+install-report.json
+install-report.json.tmp
+credential-outbox/
+incidents/
+watchdog-state.json
+
+# External CLI and Desktop credential state at repository root
+/.ssh/
+/.aws/
+/.azure/
+/.config/gcloud/
+/.claude/
+/.codex/
+/connections.json
+
+# Local build or dependency trees
+/node_modules/
+/checkpoints/
+/sandboxes/
+/.worktrees/

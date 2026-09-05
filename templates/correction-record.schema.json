@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/correction-record.schema.json",
+  "title": "Scoped correction record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "correction_id", "source_event_id", "operation",
+    "destination", "durability", "explicit", "confirmed", "recorded_at",
+    "effective_at", "client_id", "source", "scope", "target",
+    "prior_claim", "replacement", "reason", "privacy"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "correction_id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "source_event_id": {"type": "string", "minLength": 1, "maxLength": 500},
+    "operation": {"enum": ["correct", "retract"]},
+    "destination": {
+      "enum": ["task_requirement", "project_fact", "principal_preference", "voice", "approval", "session_clarification"]
+    },
+    "durability": {"enum": ["durable", "session"]},
+    "explicit": {"type": "boolean"},
+    "confirmed": {"type": "boolean"},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "effective_at": {"type": "string", "format": "date-time"},
+    "client_id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "source_id", "authenticated_subject"],
+      "properties": {
+        "kind": {"enum": ["authenticated_user", "approved_import", "protected_broker"]},
+        "source_id": {"type": "string", "minLength": 1, "maxLength": 500},
+        "authenticated_subject": {"type": "string", "minLength": 1, "maxLength": 300}
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": {"type": "string", "minLength": 1, "maxLength": 500},
+      "minProperties": 1,
+      "maxProperties": 8,
+      "propertyNames": {"enum": ["project_id", "profile_id", "task_id", "approval_id", "overlay", "lane", "account", "target"]}
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority_id", "field", "exact_scope"],
+      "properties": {
+        "authority_id": {"type": "string", "minLength": 1, "maxLength": 500},
+        "field": {"type": "string", "minLength": 1, "maxLength": 300},
+        "exact_scope": {"type": "string", "minLength": 1, "maxLength": 1000}
+      }
+    },
+    "prior_claim": {"$ref": "#/$defs/claimReference"},
+    "replacement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "content"],
+      "properties": {
+        "claim_id": {"type": "string", "minLength": 1, "maxLength": 500},
+        "content": {"type": ["string", "number", "integer", "boolean", "null", "object", "array"]}
+      }
+    },
+    "reason": {"type": "string", "minLength": 1, "maxLength": 2000},
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contains_secret"],
+      "properties": {"contains_secret": {"const": false}}
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"destination": {"const": "session_clarification"}}},
+      "then": {"properties": {"durability": {"const": "session"}}},
+      "else": {"properties": {"durability": {"const": "durable"}}}
+    }
+  ],
+  "$defs": {
+    "claimReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "version"],
+      "properties": {
+        "claim_id": {"type": "string", "minLength": 1, "maxLength": 500},
+        "version": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

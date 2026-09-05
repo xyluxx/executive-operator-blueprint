@@ -1,0 +1,92 @@
+version: 1
+hermes_version: "0.21.0 (b51c055a)"
+canonical_task_authority: native-hermes-kanban
+guarantees:
+  - id: registered-tool-admission
+    owner: operator-control plugin
+    enforcement_point: registered Hermes pre_tool_call hook
+    gate: explicit read-only allowlist; generic write tools and unknown capabilities denied while enabled
+    covered_surfaces: [Hermes tool dispatch through the registered operator-control hook]
+    known_bypasses: [Hermes callback exceptions may fail open, direct provider access outside Hermes]
+    tests: [tests/test_operator_control_defects.py]
+    status: verified
+  - id: dependency-acceptance
+    owner: operator-control protected adapter
+    enforcement_point: immediately before protected downstream effect
+    gate: signed version-bound upstream acceptance verification
+    covered_surfaces: [operator_control_execute:local-sqlite]
+    known_bypasses: [Hermes callback exceptions may fail open, direct provider access outside Hermes]
+    tests: [tests/test_managed_adapter_integration.py, tests/test_operator_control_defects.py]
+    status: verified
+  - id: cancellation
+    owner: operator-control protected adapter
+    enforcement_point: pre-dispatch and pre-effect live Kanban read
+    gate: cancelled task denial plus unknown-effect reconciliation
+    covered_surfaces: [operator_control_execute:local-sqlite]
+    known_bypasses: [already-confirmed external effects]
+    tests: [tests/test_managed_adapter_integration.py]
+    status: verified
+  - id: worker-fencing
+    owner: operator-control managed gate
+    enforcement_point: immediately before protected work and callback consumption
+    gate: live task/run/claim-lock CAS and one exact-target writer lease
+    covered_surfaces: [operator_control_execute:local-sqlite]
+    known_bypasses: [external adapters remain blocked until provider-side atomic conformance passes]
+    tests: [tests/test_managed_adapter_integration.py, tests/test_managed_hardening.py]
+    status: verified
+  - id: duplicate-effect
+    owner: protected provider adapter
+    enforcement_point: callback and operation-key boundary
+    gate: single-use fence plus provider idempotency or serialization
+    covered_surfaces: [operator_control_execute:local-sqlite]
+    known_bypasses: [provider lacking idempotency outside serialized route]
+    tests: [tests/test_managed_adapter_integration.py, tests/test_control_boundary_adversarial.py]
+    status: verified
+  - id: uncertain-effect
+    owner: action broker reconciler
+    enforcement_point: retry admission
+    gate: unknown effects deny retry until authenticated provider readback
+    covered_surfaces: [operator_control_execute:local-sqlite]
+    known_bypasses: [provider result unknowable]
+    tests: [tests/test_orchestration_edges.py, tests/test_control_boundary_adversarial.py]
+    status: verified
+  - id: budget-reservation
+    owner: main operator admission controller
+    enforcement_point: concurrent work admission
+    gate: locked aggregate budget with verification reserve
+    covered_surfaces: [operator_control_execute:local-sqlite]
+    known_bypasses: [unmetered external work]
+    tests: [tests/test_managed_adapter_integration.py]
+    status: verified
+  - id: retirement
+    owner: main operator
+    enforcement_point: specialist retirement adapter
+    gate: schedules disabled, credentials revoked, tasks transferred, evidence preserved, resume tested
+    covered_surfaces: []
+    known_bypasses: [no bundled live retirement provider adapter; non-compensable credentials are blocked]
+    tests: [tests/test_managed_team_isolation.py, tests/test_managed_hardening.py]
+    status: blocked
+  - id: direct-kanban-completion
+    owner: Hermes core or deployment administrator
+    enforcement_point: direct CLI/dashboard/API mutation
+    gate: observer-only
+    covered_surfaces: []
+    known_bypasses: [hermes kanban complete, dashboard, API, direct SQLite]
+    tests: [tests/test_operator_control.py]
+    status: blocked
+  - id: native-parent-auto-promotion
+    owner: Hermes core
+    enforcement_point: native dependency promotion
+    gate: observer-only
+    covered_surfaces: []
+    known_bypasses: [raw done parent promotes child without signed acceptance]
+    tests: [tests/test_enforcement_coverage.py]
+    status: blocked
+  - id: unsupported-provider-atomic-fencing
+    owner: provider integration owner
+    enforcement_point: provider write transaction or conditional request
+    gate: no generic fallback; route remains unavailable until a fencing-capable adapter exists
+    covered_surfaces: []
+    known_bypasses: [direct provider access outside operator-control]
+    tests: [tests/test_managed_adapter_integration.py]
+    status: blocked

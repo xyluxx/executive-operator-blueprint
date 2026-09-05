@@ -1,0 +1,70 @@
+version: 1.0.0
+profile_name: executive-operator
+install_mode: new-profile
+hosting: local-desktop
+operating_mode: single-agent
+surfaces: [desktop]
+channels: []
+task_system:
+  enabled: true
+  canonical_store: hermes-kanban
+  board: default
+  manual_unassigned_tasks: true
+  parked_mapping: todo-with-checkpoint
+  auto_decompose: false
+memory:
+  enabled: true
+  provider: null
+  retention_policy: owner-defined
+  deletion_policy: owner-controlled
+tools:
+  browser: optional
+  computer_use: optional
+  secure_credentials: optional
+capability_packs:
+  core-operator: requested
+  operator-control: not-requested
+  executive-assistant: requested
+  documents-and-research: requested
+  artifact-storage: not-requested
+  secure-credentials: not-requested
+  crm: not-requested
+  marketing-and-seo: not-requested
+  composio-connectors: not-requested
+  google-sheets: not-requested
+  public-relations: not-requested
+  website-reliability: not-requested
+  infrastructure: not-requested
+  coding-specialists: not-requested
+  recruiting: not-requested
+  travel: not-requested
+  finance-visibility: not-requested
+  design: not-requested
+  leadership-operations: not-requested
+  managed-agent-team: not-requested
+additional_integrations: []
+credential_gates: [model provider]
+notification_policy:
+  primary_route: null
+  failure_route: null
+  quiet_success: true
+privacy:
+  regulated_data: false
+  data_residency: null
+  external_model_policy: owner-approved
+credentials:
+  intake_method: owner-selected
+  reusable_vault: false
+budgets:
+  monthly_model: null
+  monthly_integrations: null
+approval_policy:
+  external_messages: exact-action
+  invitations: exact-action
+  spending: exact-action
+  production_changes: exact-action
+  credential_changes: exact-action
+  deletion: exact-action
+backup:
+  destination_class: local-protected
+  restore_test_required: true

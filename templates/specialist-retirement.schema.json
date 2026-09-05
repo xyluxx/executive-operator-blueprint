@@ -1,0 +1,12 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema","$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/specialist-retirement.schema.json","type":"object","additionalProperties":false,
+  "required":["schema_version","specialist_id","main_operator","effective_at","schedule_ids","credential_references","task_ids","evidence_references","actions"],
+  "properties":{
+    "schema_version":{"const":1},"specialist_id":{"type":"string","minLength":1},"main_operator":{"type":"string","minLength":1},"effective_at":{"type":"string","format":"date-time"},
+    "schedule_ids":{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true},"credential_references":{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true},
+    "task_ids":{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true},"evidence_references":{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true},
+    "actions":{"type":"object","additionalProperties":false,"required":["disable_schedules","revoke_credentials","transfer_ownership","preserve_evidence","main_operator_resume_test"],"properties":{
+      "disable_schedules":{"const":true},"revoke_credentials":{"const":true},"transfer_ownership":{"const":true},"preserve_evidence":{"const":true},"main_operator_resume_test":{"const":true}
+    }}
+  }
+}

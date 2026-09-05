@@ -1,0 +1,27 @@
+{
+  "sites": [
+    {
+      "id": "example-site",
+      "name": "Example site",
+      "url": "https://example.com/health",
+      "host": "example.com",
+      "environment": "production",
+      "credential_reference": "vault://websites/example-site/deploy",
+      "credential_principal": "deploy-example-site",
+      "owner": "website-owner",
+      "repair_policy": "restart-known-service",
+      "enabled": true,
+      "healthy_codes": [200],
+      "content_contains": "ok",
+      "timeout_seconds": 10,
+      "max_body_bytes": 65536,
+      "attempts": 3,
+      "retry_delay_seconds": 2,
+      "failure_cycles": 2,
+      "allow_private_networks": false,
+      "allowed_redirect_hosts": ["example.com"],
+      "allowed_repairs": [],
+      "notification_route": "owner-primary"
+    }
+  ]
+}

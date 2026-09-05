@@ -1,0 +1,37 @@
+organization:
+  name: null
+  offer: null
+representative:
+  name: null
+  title: null
+pitch:
+  voice: null
+  minimum_words: null
+  maximum_words: null
+  required_elements: []
+  prohibited_claims: []
+targeting:
+  audiences: []
+  publication_types: []
+  topics: []
+  geographies: []
+  qualification_rules: []
+  exclusion_rules: []
+sources:
+  approved: []
+  cadence: null
+sending:
+  account_reference: null
+  approval_policy: exact-action
+  daily_limit: 0
+  follow_up_cadence: []
+  expiration: null
+crm:
+  integration_id: null
+  opportunity_object: null
+  contact_object: null
+notification:
+  route: null
+  events: [qualified-opportunity, reply, interview, placement, failure]
+win_definition: null
+retention_days: null

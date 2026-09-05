@@ -1,0 +1,32 @@
+name: executive-operator-blueprint
+version: 1.1.0
+description: "Third-party Hermes operator profile with provider-neutral daily-use contracts and modular capabilities."
+hermes_requires: ">=0.21.0"
+author: "xyluxx"
+license: "MIT"
+distribution_owned:
+  - README.md
+  - AGENTS.md
+  - AI-INSTALL.md
+  - INSTALL.md
+  - ONBOARDING.md
+  - CAPABILITIES.md
+  - SOUL.md
+  - .env.template
+  - .no-bundled-skills
+  - assets/
+  - docs/
+  - contracts/
+  - templates/
+  - tools/
+  - capabilities.yaml
+  - optional-packs.yaml
+  - config.yaml
+  - skills/
+  - optional-skills/
+  - plugins/
+  - scripts/preflight.py
+  - scripts/install_blueprint.py
+  - scripts/operator_control_admin.py
+  - distribution.yaml
+env_requires: []

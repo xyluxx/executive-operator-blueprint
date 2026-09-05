@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/public-release-policy.schema.json",
+  "title": "Public release audit policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "repository", "refs", "release", "identities", "public_surface"],
+  "properties": {
+    "schema_version": {"const": 2},
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner", "name", "visibility", "default_branch"],
+      "properties": {
+        "owner": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "visibility": {"const": "public"},
+        "default_branch": {"type": "string", "minLength": 1}
+      }
+    },
+    "refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["branches", "tags", "releases"],
+      "properties": {
+        "branches": {"$ref": "#/$defs/exactSet"},
+        "tags": {"$ref": "#/$defs/exactSet"},
+        "releases": {"$ref": "#/$defs/exactSet"}
+      }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tag", "commit_count", "content_digest", "checksum_asset", "checksum_entry"],
+      "properties": {
+        "tag": {"type": "string", "minLength": 1},
+        "commit_count": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "expected"],
+          "properties": {
+            "mode": {"const": "baseline"},
+            "expected": {"const": 1}
+          }
+        },
+        "content_digest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["algorithm", "excluded_paths", "sha256"],
+          "properties": {
+            "algorithm": {"const": "sha256-path-mode-content-v1"},
+            "excluded_paths": {
+              "type": "array",
+              "const": ["contracts/public-release-policy.yaml"]
+            },
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        },
+        "checksum_asset": {"type": "string", "minLength": 1},
+        "checksum_entry": {"type": "string", "minLength": 1}
+      }
+    },
+    "identities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed_contributors", "allowed_collaborators", "allowed_git_identities"],
+      "properties": {
+        "allowed_contributors": {"$ref": "#/$defs/stringSet"},
+        "allowed_collaborators": {"$ref": "#/$defs/stringSet"},
+        "allowed_git_identities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "email"],
+            "properties": {
+              "name": {"type": "string", "minLength": 1},
+              "email": {"type": "string", "format": "email"}
+            }
+          }
+        }
+      }
+    },
+    "public_surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["readme", "assets"],
+      "properties": {
+        "readme": {"type": "string", "minLength": 1},
+        "assets": {"$ref": "#/$defs/stringSet"}
+      }
+    }
+  },
+  "$defs": {
+    "stringSet": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "exactSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed", "required"],
+      "properties": {
+        "allowed": {"$ref": "#/$defs/stringSet"},
+        "required": {"$ref": "#/$defs/stringSet"}
+      }
+    }
+  }
+}

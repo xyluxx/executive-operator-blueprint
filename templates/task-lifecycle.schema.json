@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/task-lifecycle.schema.json",
+  "title": "Canonical task lifecycle contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "authority", "human_states", "native_statuses", "dispositions", "verification_results", "external_effect_results", "mappings", "invariants"],
+  "properties": {
+    "contract_version": {"const": "1.0"},
+    "authority": {"const": "contracts/task-lifecycle.yaml"},
+    "human_states": {"const": ["active", "waiting", "blocked", "parked", "partial", "done"]},
+    "native_statuses": {"const": ["triage", "todo", "ready", "running", "blocked", "scheduled", "review", "done", "archived"]},
+    "dispositions": {"const": ["cancelled", "superseded", "dropped", "exception-closed"]},
+    "verification_results": {"const": ["pass", "fail", "blocked", "inconclusive"]},
+    "external_effect_results": {"const": ["confirmed-success", "confirmed-failure", "unknown"]},
+    "mappings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["active", "waiting", "blocked", "parked", "partial", "done", "dispositions"],
+      "properties": {
+        "active": {"const": {"native_statuses": ["triage", "todo", "ready", "running", "scheduled", "review"]}},
+        "waiting": {"const": {"native_status": "blocked", "requires": ["waiting_party", "next_check"]}},
+        "blocked": {"const": {"native_status": "blocked", "requires": ["blocker", "owner", "wake_condition"]}},
+        "parked": {"const": {"native_status": "todo", "requires": ["checkpoint"]}},
+        "partial": {"const": {"native_statuses": ["todo", "ready", "running", "blocked", "scheduled", "review"], "requires": ["satisfied_criteria", "outstanding_criteria", "resume_point"], "closes_task": false}},
+        "done": {"const": {"native_status": "done", "requires": ["acceptance"]}},
+        "dispositions": {"const": {"native_status": "archived", "requires": ["disposition", "reason"]}}
+      }
+    },
+    "invariants": {
+      "const": {"canonical_task_store": "hermes-kanban", "unassigned_dispatch": false, "manual_unassigned_editable": true, "focus_changes_native_status": false, "worker_submission_status": "review"}
+    }
+  }
+}

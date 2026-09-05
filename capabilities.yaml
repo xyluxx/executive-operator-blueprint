@@ -1,0 +1,224 @@
+version: 1.1.0
+reviewed_with_hermes: ">=0.21.0,<0.22.0"
+reviewed_upstream_build: "b51c055a"
+status_labels: [Native, Blueprint, Bundled, Configured, Verified, Optional, Planned, Blocked]
+recommended_mode: workload-selected
+modes:
+  single-agent:
+    status: Bundled
+    description: One main operator with temporary specialists for bounded work.
+    recommended_for: Most personal and business use.
+  managed-team:
+    status: Bundled
+    description: One main operator managing persistent specialist profiles or Bots as a first-class mode.
+    recommended_for: Recurring independent lanes, sustained concurrency, distinct identities, dedicated credentials, separate schedules, strong data boundaries, or another host.
+    interaction_rule: The principal talks to the main operator rather than switching manually between agents.
+    selection_rule: No mandatory single-operator trial; deployment conformance is separate.
+hosting:
+  local-desktop:
+    status: Native
+    use_when: The computer is available while work runs.
+  always-on-vps:
+    status: Optional
+    use_when: Messaging, schedules, monitoring, or background work must continue while personal devices are offline.
+  regulated-dedicated:
+    status: Optional
+    use_when: Contracts, data residency, regulated data, or a BAA require a reviewed environment.
+capability_packs:
+  operator-control:
+    default_requested: false
+    blueprint_status: Optional
+    activation: separate_policy_boundary_required
+    included_paths: [plugins/operator-control, tools/operator-control]
+    dependencies: [separate UID or container or managed policy service, ACL-restricted IPC, supported write adapter]
+    synthetic_reference_tests: [missing approval denial, trusted identity resolution, signed acceptance and evidence denial tests, payload digest, replay denial, broker outage denial, exact-target readback, unknown-effect reconciliation]
+    verification: [synthetic-reference-tests-only-not-deployed-boundary-proof]
+    verification_status: synthetic-reference-only-not-deployed-boundary-proof
+    limitations: Disabled and unconfigured. These in-process synthetic tests are not proof of a deployed separate process, UID, IPC, peer-authentication, or ACL boundary. Generic terminal/browser writes and direct Kanban transitions are not gated; Kanban hooks are observer-only on Hermes 0.21.
+  core-operator:
+    default_requested: true
+    blueprint_status: Bundled
+    activation: native_kanban_initialization_required
+    skills: [continuity, integration-onboarding, inbox-triage, meeting-action-items, document-action-items, grounded-citations, calendar-operations]
+    included_paths: [tools/operator-state, tools/task-reconciliation]
+    native_required: [Hermes Kanban]
+    canonical_task_store: hermes-kanban
+    unassigned_tasks_dispatch: false
+    operator_state_role: optional-migration-reference
+    limitations: Native Hermes Kanban is the sole task lifecycle authority and visual queue. Operator State and existing systems remain migration inputs or derived/reference integrations only. The bundled provider-neutral reconciler is verified with synthetic observations against a disposable native board; real source adapters and live evidence remain unconfigured and require provider-specific contract tests.
+    dependencies: [Hermes profile, built-in memory, Python 3.10 or newer]
+    verification: [profile loads, skills discoverable, Kanban board initializes, unassigned task is skipped by dispatcher, manual completion reads back, cross-source observations reconcile to one card, fresh session resumes exact checkpoint, stale and partial evidence stay open, verified meeting criteria complete once, owner acknowledgment deduplicates, source event replay creates no duplicate]
+  executive-assistant:
+    default_requested: true
+    blueprint_status: Bundled
+    activation: provider_setup_required
+    calendar_contract: bundled-provider-neutral
+    provider_adapters_status: Optional
+    skills: [inbox-triage, meeting-action-items]
+    dependencies: [one approved email or calendar provider for live work]
+    connectors:
+      email: [google-workspace, microsoft-graph, imap-smtp]
+      calendar: [google-calendar, microsoft-graph, caldav]
+      meetings:
+        native_example: google-meet
+        adapter_examples: [fathom, teams-transcripts, zoom, webhook, file-export]
+    verification: [narrow read, private draft, timezone test, no-send-without-approval test]
+    private_voice_profile: templates/voice-profile.schema.json
+    daily_brief_contract: templates/daily-brief-routine.schema.json
+  documents-and-research:
+    default_requested: true
+    blueprint_status: Bundled
+    activation: source_access_required
+    suggested_ecosystem_skills: [docx, xlsx, pdf, powerpoint, youtube-content]
+    skills: [document-action-items, grounded-citations]
+    dependencies: [selected skill dependencies, source access]
+    verification: [discover each skill, inspect before install, run one synthetic artifact, inspect the real file]
+  artifact-storage:
+    default_requested: false
+    blueprint_status: Bundled
+    activation: provider_connector_required
+    included_paths: [tools/artifact-storage]
+    optional_skills: [artifact-storage-operator]
+    contract: templates/artifact-storage-contract.schema.json
+    local_adapter_status: bundled
+    cloud_adapters_status: optional-unverified-synthetic-contracts
+    dependencies: [approved storage provider, destination boundary, permission and retention policy]
+    verification: [real office-file reopen, synthetic upload, checksum and version readback, exact account and target identity, permission and retention readback, duplicate upload, unknown-effect reconciliation, link visibility, expiration, revocation, cleanup, wrong-tenant denial]
+  secure-credentials:
+    default_requested: false
+    blueprint_status: Bundled
+    activation: local_reference_until_deployment_review
+    included_paths: [tools/secure-credentials]
+    replaceable_with: [onepassword, bitwarden, hashicorp-vault, cloud-secret-manager]
+    dependencies: [Python 3.10 or newer, FastAPI, Uvicorn, Cryptography, Pydantic]
+    verification: [secret absent from database bytes, one-time concurrency test, wrong-principal denial, claim recovery, permissions test]
+  crm:
+    default_requested: false
+    blueprint_status: Bundled
+    activation: provider_connector_required
+    optional_skills: [crm-operator]
+    recommended_reference: twenty
+    adapter_examples: [salesforce, hubspot, pipedrive, zoho, airtable, notion, custom-api]
+    dependencies: [approved CRM account, MCP or API connector, object mapping]
+    verification: [identity lookup, duplicate prevention, approved safe write, readback, wrong-workspace denial]
+  marketing-and-seo:
+    default_requested: false
+    blueprint_status: Bundled
+    activation: provider_connectors_required
+    optional_skills: [growth-intelligence]
+    connector_examples: [google-ads, ga4, search-console, google-business-profile, dataforseo, google-places, firecrawl, marketing-data-aggregator]
+    dependencies: [approved data accounts, read scopes, attribution definition]
+    verification: [account identity, date and timezone, totals reconciliation, no unapproved campaign change]
+  composio-connectors:
+    default_requested: false
+    blueprint_status: Optional
+    configured: false
+    enabled: false
+    activation: optional_external_provider_setup_required
+    optional_skills: [composio-integration]
+    dependencies: [Composio account, approved OAuth or API configuration, MCP or API connection, retention and budget policy]
+    verification: [timestamped official setup evidence, correct account, exact scopes, narrow read, approved safe write and readback, revoke]
+    setup_evidence_required: [pricing, plan, tool_limits, trigger_limits, scopes, write_behavior, data_policy]
+    evidence_freshness_days: 30
+  google-sheets:
+    default_requested: false
+    blueprint_status: Optional
+    configured: false
+    enabled: false
+    activation: approved_google_account_and_spreadsheet_scope_required
+    optional_skills: [google-workspace]
+    dependencies: [approved Google account, exact spreadsheet and range, read and scoped write permissions]
+    verification: [known range read, scoped write, exact range and value readback, idempotency, unknown-effect reconciliation, revoke, disable]
+  public-relations:
+    default_requested: false
+    blueprint_status: Bundled
+    activation: onboarding_and_source_connectors_required
+    optional_skills: [pr-operator]
+    dependencies: [brand brief, approved sources, CRM or ledger, notification route]
+    approval_default: Draft and monitor automatically. Require approval before sending.
+    verification: [source deduplication, fit rubric, voice test, no-send test, CRM readback]
+  website-reliability:
+    default_requested: false
+    blueprint_status: Bundled
+    activation: collector_configuration_required
+    optional_skills: [website-reliability]
+    included_paths: [tools/website-watchdog]
+    collector_status: Bundled
+    registry_reconciliation_status: Bundled
+    bounded_repair_contract_status: Bundled
+    synthetic_worker_status: Bundled
+    live_ai_recovery_worker_status: Planned
+    credential_delivery_boundary_status: Planned
+    notification_adapter_status: Planned
+    dependencies: [private site registry, script-only cron, incident owner, operator-control approval reference]
+    verification: [exact registry reconciliation, healthy silence, transient suppression, scheduler identity, one incident, recovery cancellation, secure lease, bounded repair, post-repair health, deadman alert, credential-delivery latency, notification policy]
+  infrastructure:
+    default_requested: false
+    blueprint_status: Optional
+    activation: ecosystem_skills_and_host_access_required
+    suggested_ecosystem_skills: [docker-management, github, web-app-deployment, linux-service-persistence]
+    discovery_required: true
+    dependencies: [exact host, approved access, backup, service manager]
+    verification: [audit first, backup restore, health readback, reboot recovery]
+  coding-specialists:
+    default_requested: false
+    blueprint_status: Optional
+    activation: harness_authentication_required
+    harness_examples: [codex, claude-code, opencode, acp-compatible-client]
+    dependencies: [installed harness, authenticated subscription or API, isolated repository]
+    verification: [live prompt, branch scope, project tests, final diff review]
+  recruiting:
+    default_requested: false
+    blueprint_status: Optional
+    activation: duty_and_data_source_setup_required
+    dependencies: [role rubric, lawful sources, retention policy, human decision owner]
+    verification: [duplicate identity, source provenance, protected-attribute exclusion, no-contact-without-approval]
+  travel:
+    default_requested: false
+    blueprint_status: Optional
+    activation: traveler_profile_and_provider_review_required
+    dependencies: [traveler preferences, dates, budget, booking approval policy]
+    verification: [timezone and dates, total-price reproduction, cancellation terms, no-booking-without-approval]
+  finance-visibility:
+    default_requested: false
+    blueprint_status: Optional
+    activation: read_only_provider_and_entity_scope_required
+    dependencies: [approved entities and accounts, reporting definitions, read-only credentials]
+    verification: [account identity, reporting period, totals reconciliation, source readback, mutation denial]
+  design:
+    default_requested: false
+    blueprint_status: Optional
+    activation: artifact_brief_and_reviewed_design_tools_required
+    dependencies: [artifact brief, brand inputs, output format, rights review]
+    verification: [render output, visual inspection, brand constraint check, rights and attribution check]
+  leadership-operations:
+    default_requested: false
+    blueprint_status: Bundled
+    activation: onboarding_and_source_setup_required
+    skills: [meeting-action-items]
+    optional_skills: [crm-operator]
+    dependencies: [calendar or CRM sources, decision and notification policy]
+    verification: [meeting brief, decision log, owner attribution, quiet-success policy]
+  managed-agent-team:
+    default_requested: false
+    blueprint_status: Bundled
+    activation: workload_selection_and_private_conformance_required
+    native_home: profiles_bot_mode_and_kanban
+    dependencies: [accountable main operator, separate profile or host plan, canonical-state contract, cost and privacy budgets]
+    selection: recurring lanes, concurrency, identity, credential, schedule, boundary, or host needs; no single-operator trial required
+    contracts: [templates/specialist-contract.schema.json, templates/specialist-retirement.schema.json, contracts/enforcement-coverage.yaml]
+    verification: [least-context brief, profile and board isolation, canonical ownership, worker fencing, exact-target lease, budget preservation, dependency acceptance, manager verification, cross-agent leakage test, specialist retirement]
+channels:
+  native_examples: [desktop, web, cli, telegram, discord, slack, whatsapp, whatsapp-cloud, signal, sms, email, google-chat, mattermost, matrix, line, ntfy, bluebubbles, photon, webhooks]
+  optional_plugin_examples: [microsoft-teams, irc]
+integration_contract:
+  required_fields: [capability, provider, owner, authentication_method, credential_reference, permissions, approved_operations, prohibited_operations, cost_limit, retry_policy, fallback, status, last_contract_test, evidence]
+  activation_gate: [authentication, narrow_read, approved_safe_write_when_applicable, target_readback, failure_test, disable_or_rollback_test]
+notifications:
+  onboarding_required: true
+  default_policy:
+    notify: [required-decision, approaching-deadline, late-promised-response, failed-automatic-recovery, material-opportunity-or-reply, security-or-credential-problem]
+    silent: [healthy-check, unchanged-state, false-alarm, verified-successful-routine-recovery]
+learning:
+  enabled: true
+  process: [detect-repeated-need, search-existing-capabilities, draft-smallest-extension, write-tests, review-risk-and-privacy, approve-when-required, activate-and-verify, version-and-record, retire-if-unused]

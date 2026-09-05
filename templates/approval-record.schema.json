@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/approval-record.schema.json",
+  "title": "Protected approval record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "approval_id", "authority_type", "approver", "authority_source", "issuance_channel", "non_transferable", "action_class", "account", "target", "payload_digest", "limits", "task_id", "task_version", "requirement_version", "policy_digest", "operation_key", "issued_at", "expires_at", "cancelled"],
+  "properties": {
+    "schema_version": {"const": 1}, "approval_id": {"type": "string", "minLength": 1},
+    "authority_type": {"enum": ["one_off", "standing"]},
+    "approver": {"type": "object", "additionalProperties": false, "required": ["role", "subject"], "properties": {"role": {"const": "authenticated_approver"}, "subject": {"type": "string", "minLength": 1}}},
+    "authority_source": {"type": "string", "minLength": 1}, "issuance_channel": {"type": "string", "minLength": 1},
+    "non_transferable": {"const": true}, "action_class": {"type": "string"}, "account": {"type": "string"}, "target": {"type": "string"},
+    "payload_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "limits": {"type": "object"}, "task_id": {"type": "string"},
+    "task_version": {"type": "integer", "minimum": 1}, "requirement_version": {"type": "integer", "minimum": 1},
+    "policy_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "operation_key": {"type": "string"},
+    "issued_at": {"type": "string", "format": "date-time"}, "expires_at": {"type": "string", "format": "date-time"}, "cancelled": {"type": "boolean"}
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/daily-brief-routine.schema.json",
+  "title": "Daily brief routine",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "routine_id", "schedule", "sources", "sections", "empty_policy", "delivery", "task_truth_policy", "retirement"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "routine_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+    "schedule": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner", "enabled", "local_time", "iana_timezone", "daylight_saving_policy"],
+      "properties": {
+        "owner": {"const": "hermes-native-cron"},
+        "enabled": {"type": "boolean"},
+        "local_time": {"type": "string", "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"},
+        "iana_timezone": {"type": ["string", "null"], "pattern": "^[A-Za-z_+-]+(?:/[A-Za-z0-9_+-]+)+$"},
+        "daylight_saving_policy": {"const": "follow-timezone-database"}
+      }
+    },
+    "sources": {
+      "type": "object", "additionalProperties": false,
+      "required": ["canonical_tasks", "approved_live_sources_only"],
+      "properties": {
+        "canonical_tasks": {"const": "hermes-kanban"},
+        "approved_live_sources_only": {"const": true}
+      }
+    },
+    "sections": {
+      "type": "array", "uniqueItems": true, "minItems": 5, "maxItems": 5,
+      "items": {"enum": ["decisions-waiting", "todays-commitments", "due-outside-follow-ups", "slipped-or-newly-at-risk", "unresolved-consequential-effects"]}
+    },
+    "empty_policy": {"const": "stay-silent"},
+    "delivery": {
+      "type": "object", "additionalProperties": false,
+      "required": ["channel", "deduplication", "verification"],
+      "properties": {
+        "channel": {"type": ["string", "null"], "minLength": 1},
+        "deduplication": {
+          "type": "object", "additionalProperties": false,
+          "required": ["enabled", "key_fields"],
+          "properties": {
+            "enabled": {"const": true},
+            "key_fields": {"const": ["routine_id", "scheduled_occurrence", "channel", "recipient"]}
+          }
+        },
+        "verification": {
+          "type": "object", "additionalProperties": false,
+          "required": ["require_delivery_record_readback", "record_fields"],
+          "properties": {
+            "require_delivery_record_readback": {"const": true},
+            "record_fields": {"const": ["routine_id", "scheduled_occurrence", "operation_key", "channel", "recipient", "content_digest", "provider_delivery_id", "state", "created_at", "delivered_at", "reconciliation"]}
+          }
+        }
+      }
+    },
+    "task_truth_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["may_create", "may_close", "may_change_status", "brief_is_task_store"],
+      "properties": {
+        "may_create": {"const": false}, "may_close": {"const": false},
+        "may_change_status": {"const": false}, "brief_is_task_store": {"const": false}
+      }
+    },
+    "retirement": {
+      "type": "object", "additionalProperties": false,
+      "required": ["disable_schedule", "revoke_source_access", "verify_no_future_runs", "retain_delivery_records_under_policy"],
+      "properties": {
+        "disable_schedule": {"const": true}, "revoke_source_access": {"const": true},
+        "verify_no_future_runs": {"const": true}, "retain_delivery_records_under_policy": {"const": true}
+      }
+    }
+  },
+  "allOf": [{
+    "if": {"properties": {"schedule": {"properties": {"enabled": {"const": true}}, "required": ["enabled"]}}},
+    "then": {
+      "properties": {
+        "schedule": {"properties": {"iana_timezone": {"type": "string"}}},
+        "delivery": {"properties": {"channel": {"type": "string"}}}
+      }
+    }
+  }]
+}

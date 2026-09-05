@@ -1,0 +1,345 @@
+version: 1.1.0
+default_policy: disabled-until-selected-and-verified
+resolution_record_schema: templates/resolved-capability.schema.json
+packs:
+  operator-control:
+    description: Enforce exact approvals at supported external-write adapters.
+    default_enabled: false
+    source:
+      kind: official
+      locator: plugins/operator-control
+      candidates: [operator-control]
+      resolution: bundled-reference-requires-private-boundary-deployment
+    trust: bundled-reviewed
+    license: MIT
+    version_ref: "1.1.0"
+    prerequisites: [separate broker identity, protected policy digest, approved supported adapters]
+    permissions: [approval decision, scoped provider write, result readback]
+    data_risk: {level: high, categories: [approvals, action metadata], boundary: exact supported write adapters}
+    tests: [denial, payload digest, identity roles, replay, broker outage, uncertain-effect reconciliation]
+    fallback: Keep consequential writes manual or Blocked.
+    disable_path: Block new operations, reconcile pending and unknown intents, then disable IPC and restore the compatible store backup.
+
+  executive-assistant:
+    description: Connect the executive inbox, calendar, meetings, reminders, and follow-up loop.
+    default_enabled: false
+    source:
+      kind: discovery-required
+      locator: null
+      candidates: [google-workspace, microsoft-365, himalaya, caldav-calendar-operations, google-meet, fathom]
+      resolution: inspect-and-pin-before-install
+    trust: inspect-before-selection
+    license: inspect-selected-source
+    version_ref: resolve-during-private-installation
+    prerequisites: [approved accounts, sender identity, timezone, approval and retention policy]
+    permissions: [narrow mailbox and calendar read, private drafts, approved external writes]
+    data_risk: {level: high, categories: [correspondence, calendar, contacts, meeting records], boundary: named accounts and calendars}
+    tests: [thread read, unsent draft, approved send readback, exact calendar and attendee identity, DST-safe conflict check, idempotent event readback, transcript action reconciliation, revoke]
+    fallback: Keep the core skills read-only and work from owner-provided exports.
+    disable_path: Disable adapters and schedules, revoke grants, and preserve approved records under retention policy.
+
+  documents-and-research:
+    description: Create and analyze documents, spreadsheets, presentations, media, and cited research.
+    default_enabled: false
+    source:
+      kind: discovery-required
+      locator: null
+      candidates: [docx, xlsx, pdf, powerpoint, ocr-and-documents, youtube-content, grounded-citations]
+      resolution: inspect-and-pin-before-install
+    trust: inspect-before-selection
+    license: inspect-selected-source
+    version_ref: resolve-during-private-installation
+    prerequisites: [required file formats, approved sources, artifact destination, rights policy]
+    permissions: [approved source read, local artifact write, approved storage write]
+    data_risk: {level: high, categories: [documents, media, generated artifacts], boundary: named project and storage location}
+    tests: [real file creation, native readback, citation entailment, checksum, wrong-destination denial]
+    fallback: Produce a plain local text or CSV artifact and state unsupported formats.
+    disable_path: Disable optional document tools and revoke storage access without deleting owner files.
+
+  artifact-storage:
+    description: Store and share approved work products.
+    default_enabled: false
+    source:
+      kind: bundled
+      locator: optional-skills/artifact-storage-operator
+      candidates: []
+      resolution: bundled-reviewed
+    trust: bundled-reviewed
+    license: MIT
+    version_ref: "1.0.0"
+    prerequisites: [approved storage provider or local filesystem, exact account and target identity, destination, permission policy, retention policy]
+    permissions: [scoped file write, metadata read, approved sharing]
+    data_risk: {level: high, categories: [documents, generated work products], boundary: named folder or bucket and audience}
+    tests: [real CSV XLSX DOCX PDF creation and reopen, exact account and target identity, idempotent upload, provider object ID, checksum and version readback, permission and retention readback, unknown-effect reconciliation, link visibility, expiration, revocation, cleanup, disable, wrong-tenant denial]
+    fallback: Keep the artifact local and report its exact path.
+    disable_path: Revoke links and connector access; retain or delete files only under policy.
+
+  secure-credentials:
+    description: Receive, store, and deliver secrets through an owner-selected protected path.
+    default_enabled: false
+    source:
+      kind: bundled
+      locator: optional-skills/credential-operator
+      candidates: [hermes-native-secrets, onepassword, bitwarden, hashicorp-vault, cloud-secret-manager]
+      resolution: bundled-or-inspect-and-pin-alternative
+    trust: bundled-reviewed
+    license: MIT
+    version_ref: "1.0.0"
+    prerequisites: [approved secret manager or private reference deployment, authenticated operator, retention policy]
+    permissions: [one-time secret intake, local owner-scoped vault access, approved recipient delivery]
+    data_risk: {level: high, categories: [credentials, access tokens], boundary: designated vault and recipient}
+    tests: [secret absent from logs and metadata, wrong-recipient denial, expiration, one-time concurrency, revocation]
+    fallback: Ask the owner to configure the provider directly without placing the secret in chat.
+    disable_path: Disable intake, revoke issued credentials, and destroy temporary material under policy.
+
+  crm:
+    description: Read and update approved customer and relationship records.
+    default_enabled: false
+    source:
+      kind: bundled
+      locator: optional-skills/crm-operator
+      candidates: [twenty, hubspot, salesforce, pipedrive, zoho, airtable, notion]
+      resolution: bundled-contract-plus-inspect-and-pin-adapter
+    trust: bundled-reviewed
+    license: MIT
+    version_ref: "1.0.0"
+    prerequisites: [approved CRM account, object map, credential reference]
+    permissions: [narrow object read, approved record write]
+    data_risk: {level: high, categories: [customer identity, communications, commercial data], boundary: one approved workspace}
+    tests: [identity lookup, duplicate prevention, approved write and readback, wrong-workspace denial]
+    fallback: Export a read-only review file; do not write.
+    disable_path: Disable the connector, revoke its credential, and remove it from routing.
+
+  marketing-and-seo:
+    description: Analyze approved marketing, attribution, SEO, demand, and market data.
+    default_enabled: false
+    source:
+      kind: bundled
+      locator: optional-skills/growth-intelligence
+      candidates: [google-ads, ga4, search-console, dataforseo, firecrawl, windsor]
+      resolution: bundled-contract-plus-inspect-and-pin-adapter
+    trust: bundled-reviewed
+    license: MIT
+    version_ref: "1.0.0"
+    prerequisites: [approved accounts, metric definitions, date and timezone]
+    permissions: [analytics read, approved bounded campaign write only]
+    data_risk: {level: moderate, categories: [campaign data, audience aggregates], boundary: named business accounts}
+    tests: [account identity, totals reconciliation, source citation, no mutation without approval]
+    fallback: Use owner-supplied exports with explicit date ranges.
+    disable_path: Remove data routes and revoke provider access.
+
+  composio-connectors:
+    description: Connect selected SaaS actions through Composio as an optional breadth layer.
+    default_enabled: false
+    source:
+      kind: bundled
+      locator: optional-skills/composio-integration
+      candidates: [composio-mcp, composio-api]
+      resolution: bundled-contract-plus-inspect-and-pin-adapter
+    trust: bundled-reviewed
+    license: MIT
+    version_ref: "1.1.0"
+    prerequisites: [Composio account, approved app connection, timestamped current official pricing plan limits scopes write behavior and data policy evidence]
+    permissions: [selected app scopes only]
+    data_risk: {level: high, categories: [third-party account data, action payloads], boundary: approved app and account}
+    tests: [fresh official evidence gate, account identity, exact scopes, narrow read, approved write and readback, revoke]
+    fallback: Use a native or direct provider route after separate review.
+    disable_path: Disable the route and revoke the Composio connection.
+
+  google-sheets:
+    description: Read and write exact approved Google Sheets ranges through a replaceable adapter.
+    default_enabled: false
+    source:
+      kind: discovery-required
+      locator: null
+      candidates: [google-workspace, google-sheets-api, composio-google-sheets]
+      resolution: inspect-and-pin-selected-adapter
+    trust: inspect-before-selection
+    license: Verify selected adapter license from its immutable source.
+    version_ref: unselected
+    prerequisites: [approved Google account, exact spreadsheet and range, least-privilege scopes]
+    permissions: [range read, separately approved scoped range write]
+    data_risk: {level: high, categories: [spreadsheet values, account metadata], boundary: named account spreadsheet and range}
+    tests: [known range read, scoped write, exact range and value readback, idempotency, unknown-effect reconciliation, revoke, disable]
+    fallback: Use an owner-approved export or a separately reviewed direct adapter.
+    disable_path: Disable the route and revoke the selected Google authorization.
+
+  public-relations:
+    description: Monitor opportunities and prepare private approved outreach.
+    default_enabled: false
+    source:
+      kind: bundled
+      locator: optional-skills/pr-operator
+      candidates: [email-provider, crm, approved-opportunity-sources]
+      resolution: bundled-contract-plus-inspect-and-pin-adapter
+    trust: bundled-reviewed
+    license: MIT
+    version_ref: "1.0.0"
+    prerequisites: [brand brief, approved sources, outreach policy]
+    permissions: [source read, private draft, approved send only]
+    data_risk: {level: high, categories: [contacts, correspondence, reputation], boundary: named brand and sender}
+    tests: [source deduplication, fit rubric, no-send without approval, sent-record readback]
+    fallback: Produce a private opportunity brief only.
+    disable_path: Stop monitors, disable sending, and revoke source connectors.
+
+  website-reliability:
+    description: Monitor named websites and route confirmed incidents.
+    default_enabled: false
+    source:
+      kind: bundled
+      locator: optional-skills/website-reliability
+      candidates: [hermes-cron, independent-deadman, approved-host-operator]
+      resolution: bundled-contract-plus-private-deployment
+    trust: bundled-reviewed
+    license: MIT
+    version_ref: "1.0.0"
+    prerequisites: [private site registry, incident owner, approved recovery policy, credential reference, notification route]
+    permissions: [public health reads, explicitly approved recovery actions]
+    data_risk: {level: moderate, categories: [site metadata, incident evidence], boundary: named sites only}
+    tests: [exact registry reconciliation, healthy silence, transient suppression, scheduler identity, confirmed incident, recovery cancellation, secure lease, bounded repair scope, post-repair health, deadman alert, credential-delivery latency, notification policy]
+    fallback: Alert the owner with evidence; make no repair.
+    disable_path: Stop schedules and remove the site from active routing.
+
+  infrastructure:
+    description: Operate approved hosts and deployed services.
+    default_enabled: false
+    source:
+      kind: discovery-required
+      locator: null
+      candidates: [docker-stack-deployment, linux-service-persistence, reliable-automation-operations, web-app-deployment]
+      resolution: inspect-and-pin-before-install
+    trust: inspect-before-selection
+    license: inspect-selected-source
+    version_ref: resolve-during-private-installation
+    prerequisites: [exact host, approved access, backup, service manager]
+    permissions: [host audit, scoped service changes, approved deployment]
+    data_risk: {level: high, categories: [host configuration, logs, production data], boundary: named hosts and services}
+    tests: [read-only audit, backup restore, endpoint health, reboot recovery, rollback]
+    fallback: Produce reviewed commands and evidence for a human operator.
+    disable_path: Remove automation credentials and schedules; restore prior service state.
+
+  coding-specialists:
+    description: Delegate bounded repository work to approved coding harnesses.
+    default_enabled: false
+    source:
+      kind: discovery-required
+      locator: null
+      candidates: [codex, claude-code, opencode, github]
+      resolution: inspect-and-pin-before-install
+    trust: inspect-before-selection
+    license: inspect-selected-source
+    version_ref: resolve-during-private-installation
+    prerequisites: [installed authenticated harness, isolated repository, project test command]
+    permissions: [named repository read and write, approved command execution]
+    data_risk: {level: high, categories: [source code, repository secrets, build output], boundary: one named repository and branch}
+    tests: [live prompt, branch scope, project tests, diff review, no unrelated changes]
+    fallback: Work directly with repository tools under the same boundary.
+    disable_path: Disable the harness, revoke auth, and remove it from delegation routing.
+
+  recruiting:
+    description: Support lawful, human-owned recruiting workflows.
+    default_enabled: false
+    source:
+      kind: discovery-required
+      locator: null
+      candidates: [agentic-recruiting-systems, approved-ats, approved-sourcing-providers]
+      resolution: inspect-and-pin-before-install
+    trust: inspect-before-selection
+    license: inspect-selected-source
+    version_ref: resolve-during-private-installation
+    prerequisites: [role rubric, lawful sources, retention policy, human decision owner]
+    permissions: [approved candidate-source read, private evaluation draft]
+    data_risk: {level: high, categories: [candidate identity, employment history, evaluations], boundary: named role and hiring entity}
+    tests: [identity deduplication, source provenance, protected-attribute exclusion, no contact or decision without approval]
+    fallback: Use owner-supplied candidate materials for private review.
+    disable_path: Revoke sources, stop outreach, and apply retention policy.
+
+  leadership-operations:
+    description: Prepare decisions, leadership briefs, relationship context, and recurring executive reviews.
+    default_enabled: false
+    source:
+      kind: discovery-required
+      locator: null
+      candidates: [weekly-review-planning, meeting-action-items, crm-operator, grounded-citations]
+      resolution: inspect-and-pin-before-install
+    trust: inspect-before-selection
+    license: inspect-selected-source
+    version_ref: resolve-during-private-installation
+    prerequisites: [decision owner, approved sources, briefing cadence, notification policy]
+    permissions: [approved source read, private brief write, approved task or CRM write]
+    data_risk: {level: high, categories: [leadership decisions, relationships, company plans], boundary: named company and leadership group}
+    tests: [decision-source citation, owner attribution, stale-item suppression, quiet-success behavior]
+    fallback: Produce an on-demand private brief from owner-provided sources.
+    disable_path: Stop scheduled reviews and revoke source connectors.
+
+  managed-agent-team:
+    description: Configure persistent specialist Bots as a first-class mode when workload or isolation justifies them.
+    default_enabled: false
+    source:
+      kind: official
+      locator: plugins/operator-control
+      candidates: [hermes-profiles, hermes-bot-mode, hermes-kanban]
+      resolution: native-features-plus-bundled-enforcement-contracts
+    trust: bundled-reviewed
+    license: MIT
+    version_ref: "1.1.0"
+    prerequisites: [accountable main operator, workload or isolation justification, private deployment conformance]
+    permissions: [bounded specialist tools, dedicated credentials when required]
+    data_risk: {level: high, categories: [delegated context, specialist credentials, cross-lane messages], boundary: "named board, client, profile, workspace, credential, and lane"}
+    tests: [least-context brief, cross-boundary denial, stale worker fencing, exact-target lease, dependency acceptance, aggregate budget, retirement]
+    fallback: Use temporary delegation from the main operator.
+    disable_path: Disable schedules, revoke credentials, preserve evidence, transfer ownership, and prove the main operator resumes.
+
+  travel:
+    description: Research travel and prepare approval-ready itineraries and booking options.
+    default_enabled: false
+    source:
+      kind: discovery-required
+      locator: null
+      candidates: [maps, approved-travel-provider, calendar-provider, artifact-storage]
+      resolution: inspect-and-pin-before-install
+    trust: inspect-before-selection
+    license: inspect-selected-source
+    version_ref: resolve-during-private-installation
+    prerequisites: [traveler preferences, dates, budget, booking approval policy]
+    permissions: [public research, itinerary read, booking only with exact approval]
+    data_risk: {level: high, categories: [identity, itinerary, payment-adjacent data], boundary: named trip and travelers}
+    tests: [date and timezone, total-price reproduction, cancellation terms, no booking without approval]
+    fallback: Provide cited research links without booking.
+    disable_path: Disable travel connectors and revoke itinerary access.
+
+  finance-visibility:
+    description: Reconcile read-only financial visibility for owner decisions.
+    default_enabled: false
+    source:
+      kind: discovery-required
+      locator: null
+      candidates: [approved-accounting-provider, approved-banking-read-api, xlsx]
+      resolution: inspect-and-pin-before-install
+    trust: inspect-before-selection
+    license: inspect-selected-source
+    version_ref: resolve-during-private-installation
+    prerequisites: [approved entities and accounts, reporting definitions, read-only credentials]
+    permissions: [read-only balances, transactions, and reports]
+    data_risk: {level: high, categories: [financial accounts, transactions, counterparties], boundary: named entities and accounts}
+    tests: [account identity, reporting period, totals reconciliation, source readback, mutation denial]
+    fallback: Reconcile owner-supplied exports offline.
+    disable_path: Revoke account access and remove reports from routing.
+
+  design:
+    description: Produce reviewed visual and document-design artifacts.
+    default_enabled: false
+    source:
+      kind: discovery-required
+      locator: null
+      candidates: [design-taste-frontend, claude-design, visual-diagram-production, docx, powerpoint]
+      resolution: inspect-and-pin-before-install
+    trust: inspect-before-selection
+    license: inspect-selected-source
+    version_ref: resolve-during-private-installation
+    prerequisites: [artifact brief, brand inputs, output format, rights review]
+    permissions: [approved source asset read, local artifact write]
+    data_risk: {level: moderate, categories: [brand assets, draft content], boundary: named project and output folder}
+    tests: [render output, visual inspection, brand constraint check, rights and attribution check]
+    fallback: Produce a plain structured document without optional design tooling.
+    disable_path: Remove design routing and temporary generated assets under policy.

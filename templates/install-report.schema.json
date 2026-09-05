@@ -1,0 +1,39 @@
+{
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/install-report.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Executive Operator Blueprint Installation Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["state", "distribution_version", "source_commit", "source_tree_sha256", "hermes_version", "native_hermes_requirement", "tested_hermes_range",
+ "tested_hermes_build", "capability_status_authority", "capability_statuses", "platform", "profile", "requested_capability_packs", "resolved_capability_packs", "applied_assets", "dependencies", "credential_gates", "verification", "warnings", "rollback_point", "created_by_this_run", "details"],
+  "properties": {
+    "state": {"enum": ["planned", "dependency_blocked", "credential_blocked", "verification_blocked", "failed", "rolled_back", "verified"]},
+    "distribution_version": {"type": "string"},
+    "source_commit": {"type": ["string", "null"]},
+    "source_tree_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "hermes_version": {"type": "string"},
+    "native_hermes_requirement": {"const": ">=0.21.0"},
+    "tested_hermes_range": {"const": ">=0.21.0,<0.22.0"},
+    "tested_hermes_build": {"const": "b51c055a"},
+    "capability_status_authority": {"const": "contracts/capability-status.yaml"},
+    "capability_statuses": {"const": ["Native", "Blueprint", "Bundled", "Configured", "Verified", "Optional", "Planned", "Blocked"]},
+    "platform": {"type": "string"},
+    "profile": {"type": "string"},
+    "run_id": {"type": ["string", "null"]},
+    "requested_capability_packs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "resolved_capability_packs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "applied_assets": {"type": "array", "items": {"type": "string"}},
+    "dependencies": {"type": "object"},
+    "credential_gates": {"type": "array", "items": {"oneOf": [{"type": "string"}, {"type": "object"}]}},
+    "verification": {"type": "array", "items": {"type": "object"}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "rollback_point": {"type": ["string", "null"]},
+    "created_by_this_run": {"type": "boolean"},
+    "backup": {"type": ["object", "null"]},
+    "profile_fingerprint": {"type": ["object", "null"]},
+    "details": {
+      "type": "object",
+      "propertyNames": {"not": {"pattern": "(?i)(password|token|secret|api[_-]?key|credential[_-]?value)"}}
+    }
+  }
+}

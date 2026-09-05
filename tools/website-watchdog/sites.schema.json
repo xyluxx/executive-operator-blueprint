@@ -1,0 +1,47 @@
+{
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/tools/website-watchdog/sites.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Website Watchdog Site Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sites"],
+  "properties": {
+    "sites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "url", "host", "environment", "credential_reference", "credential_principal", "owner", "repair_policy", "notification_route"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,63}$"},
+          "name": {"type": "string", "minLength": 1, "maxLength": 120},
+          "url": {"type": "string", "format": "uri", "pattern": "^https?://"},
+          "host": {"type": "string", "minLength": 1},
+          "environment": {"type": "string", "minLength": 1},
+          "credential_reference": {"type": "string", "pattern": "^[a-z][a-z0-9+.-]*://"},
+          "credential_principal": {"type": "string", "minLength": 1, "maxLength": 128},
+          "owner": {"type": "string", "minLength": 1},
+          "repair_policy": {"type": "string", "minLength": 1},
+          "enabled": {"type": "boolean"},
+          "healthy_codes": {"type": "array", "items": {"type": "integer", "minimum": 100, "maximum": 599}, "minItems": 1, "uniqueItems": true},
+          "content_contains": {"type": ["string", "null"], "maxLength": 2048},
+          "timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 60},
+          "attempts": {"type": "integer", "minimum": 1, "maximum": 5},
+          "retry_delay_seconds": {"type": "integer", "minimum": 0, "maximum": 60},
+          "failure_cycles": {"type": "integer", "minimum": 1, "maximum": 10},
+          "max_body_bytes": {"type": "integer", "minimum": 256, "maximum": 1048576},
+          "allow_private_networks": {"type": "boolean"},
+          "allowed_redirect_hosts": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "allowed_repairs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "notification_route": {"type": ["string", "null"]}
+          ,"approval_reference": {"type": "string", "pattern": "^approval://", "maxLength": 512}
+          ,"approval_version": {"type": "integer", "minimum": 1}
+          ,"operator_task_reference": {"type": "string", "pattern": "^kanban://", "maxLength": 512}
+          ,"task_version": {"type": "integer", "minimum": 1}
+          ,"requirement_version": {"type": "integer", "minimum": 1}
+          ,"operation_key": {"type": "string", "minLength": 1, "maxLength": 256}
+        }
+      }
+    }
+  }
+}

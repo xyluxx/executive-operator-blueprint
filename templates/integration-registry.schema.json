@@ -1,0 +1,101 @@
+{
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/integration-registry.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Executive Operator Blueprint Integration Metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "capability", "provider", "native_type", "account_owner", "data_boundary", "credential_reference", "credential_status", "lifecycle", "enabled", "capability_status", "outcome", "evidence_definition", "official_documentation", "candidate_review", "routes_compared", "selection_approval", "immutable_source", "synthetic_proof", "live_proof", "approved_operations", "prohibited_operations", "retry_policy", "fallback", "disable_path", "rollback_path", "reusable_capture"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1}, "name": {"type": "string", "minLength": 1},
+    "capability": {"type": "string", "minLength": 1}, "provider": {"type": "string", "minLength": 1},
+    "native_type": {"enum": ["mcp", "provider", "skill", "plugin", "webhook", "messaging", "domain_adapter", "browser"]},
+    "account_owner": {"type": "string", "minLength": 1}, "data_boundary": {"type": "string", "minLength": 1},
+    "config_reference": {"type": ["string", "null"]}, "credential_reference": {"type": "string"},
+    "credential_status": {"enum": ["missing", "authorization_required", "configured", "tested", "expired", "revoked"]},
+    "auth_method": {"enum": ["oauth", "api_key", "service_account", "hosted_flow", "none"]},
+    "requested_scopes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "enabled": {"type": "boolean"},
+    "capability_status": {"enum": ["Native", "Blueprint", "Bundled", "Configured", "Verified", "Optional", "Planned", "Blocked"]},
+    "authority_receipts": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "object"}},
+    "outcome": {"type": "string", "minLength": 1}, "evidence_definition": {"type": "string", "minLength": 1},
+    "official_documentation": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/datedEvidence"}},
+    "candidate_review": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source", "source_authority_id", "version", "license", "dependencies", "permissions", "data_categories", "data_policy", "data_policy_authority_id", "cost_evidence", "cost_evidence_authority_id"],
+      "properties": {
+        "source": {"const": "https://github.com/googleapis/google-api-python-client/tree/4dc2aeca2633476d3d497f2a4368ef91172b378e"},
+        "source_authority_id": {"const": "google-source"},
+        "version": {"type": "string", "pattern": "^(commit:(?!0{40}$)[a-f0-9]{40}|sha256:(?!0{64}$)[a-f0-9]{64}|tag:v?[0-9]+\\.[0-9]+\\.[0-9]+|version:v?[0-9]+\\.[0-9]+\\.[0-9]+)$"},
+        "license": {"type": "string", "pattern": "^(?:Apache-2\\.0|BSD-2-Clause|BSD-3-Clause|GPL-2\\.0-only|GPL-3\\.0-only|ISC|LGPL-2\\.1-only|LGPL-3\\.0-only|MIT|MPL-2\\.0|Unlicense|reviewed:[A-Za-z0-9][A-Za-z0-9 ._+:/-]+)$"},
+        "dependencies": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/concrete"}},
+        "permissions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/concrete"}},
+        "data_categories": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/concrete"}},
+        "data_policy": {"const": "https://developers.google.com/terms/api-services-user-data-policy"},
+        "data_policy_authority_id": {"const": "google-data-policy"},
+        "cost_evidence": {"const": "https://developers.google.com/sheets/api/limits"},
+        "cost_evidence_authority_id": {"const": "google-cost"}
+      }
+    },
+    "routes_compared": {"type": "array", "contains": {"const": "do-not-enable"}, "minContains": 1, "items": {"type": "string"}, "uniqueItems": true},
+    "selection_approval": {"type": "string", "minLength": 1},
+    "immutable_source": {"type": "string", "pattern": "^(commit:(?!0{40}$)[a-f0-9]{40}|sha256:(?!0{64}$)[a-f0-9]{64}|tag:v?[0-9]+\\.[0-9]+\\.[0-9]+|version:v?[0-9]+\\.[0-9]+\\.[0-9]+)$"},
+    "synthetic_proof": {"$ref": "#/$defs/proof"}, "live_proof": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/liveProof"}]},
+    "approved_operations": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "prohibited_operations": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "priority": {"type": "integer", "minimum": 0}, "fallback_order": {"type": ["integer", "null"], "minimum": 0},
+    "cost_model": {"type": ["object", "null"], "propertyNames": {"not": {"pattern": "(?i)(password|token|secret|api[_-]?key)"}}},
+    "budget_limit": {"type": ["object", "null"]}, "rate_limits": {"type": ["object", "null"]},
+    "retry_policy": {"type": "object", "required": ["attempts", "idempotency_required_for_writes"], "properties": {"attempts": {"type": "integer", "minimum": 0}, "idempotency_required_for_writes": {"type": "boolean"}}, "additionalProperties": true},
+    "retention_days": {"type": ["integer", "null"], "minimum": 0}, "last_contract_test": {"type": ["string", "null"], "format": "date-time"},
+    "health": {"enum": ["unknown", "healthy", "degraded", "down"]},
+    "lifecycle": {"enum": ["proposed", "disabled", "credential_blocked", "configured", "testing", "active", "degraded", "paused", "retired"]},
+    "owner": {"type": ["string", "null"]}, "source": {"type": ["string", "null"]}, "evidence": {"type": ["string", "null"]},
+    "fallback": {"type": "string", "minLength": 1}, "disable_path": {"type": "string", "minLength": 1},
+    "rollback_path": {"type": "string", "minLength": 1},
+    "reusable_capture": {"type": "object", "additionalProperties": false, "required": ["reviewed", "private_data_removed"], "properties": {"reviewed": {"type": "boolean"}, "private_data_removed": {"type": "boolean"}}}
+  },
+  "allOf": [{
+    "if": {"properties": {"capability_status": {"enum": ["Configured", "Verified"]}}, "required": ["capability_status"]},
+    "then": {"required": ["authority_receipts"]}
+  }, {
+    "if": {"properties": {"capability_status": {"const": "Verified"}}, "required": ["capability_status"]},
+    "then": {
+      "properties": {
+        "provider": {"$ref": "#/$defs/concrete"},
+        "account_owner": {"$ref": "#/$defs/concrete"},
+        "credential_reference": {"$ref": "#/$defs/concrete"},
+        "requested_scopes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/concrete"}, "uniqueItems": true},
+        "selection_approval": {"$ref": "#/$defs/concrete"},
+        "enabled": {"const": true},
+        "lifecycle": {"const": "active"},
+        "credential_status": {"const": "tested"},
+        "health": {"const": "healthy"},
+        "live_proof": {"$ref": "#/$defs/liveProof"}
+      },
+      "required": ["health", "requested_scopes"]
+    }
+  }],
+  "$defs": {
+    "concrete": {"type": "string", "minLength": 1, "pattern": "^(?!(?i:unknown|unselected|placeholder|n/a|none|tbd|todo)$)\\S(?:.*\\S)?$"},
+    "datedEvidence": {"type": "object", "additionalProperties": false, "required": ["authority_id", "source", "retrieved_at"], "properties": {"authority_id": {"const": "google-docs"}, "source": {"const": "https://developers.google.com/sheets/api"}, "retrieved_at": {"type": "string", "format": "date-time"}}},
+    "proof": {"type": "object", "additionalProperties": false, "required": ["result", "synthetic", "evidence"], "properties": {"result": {"enum": ["pass", "fail", "blocked", "inconclusive"]}, "synthetic": {"type": "boolean"}, "evidence": {"type": "string", "minLength": 1}}},
+    "liveProof": {
+      "type": "object", "additionalProperties": false,
+      "required": ["result", "synthetic", "evidence", "approved", "approval_id", "tested_at", "account", "target", "source_ref", "version", "policy_digest", "payload_digest", "scopes", "operations", "write_applicable", "write_passed", "readback_applicable", "readback_passed", "readback_matches_payload", "authoritative_read", "unresolved_unknown"],
+      "properties": {
+        "result": {"const": "pass"}, "synthetic": {"const": false}, "evidence": {"type": "string", "minLength": 1},
+        "approved": {"const": true}, "approval_id": {"$ref": "#/$defs/concrete"}, "tested_at": {"type": "string", "format": "date-time"},
+        "account": {"$ref": "#/$defs/concrete"}, "target": {"$ref": "#/$defs/concrete"},
+        "source_ref": {"type": "string", "pattern": "^(commit:(?!0{40}$)[a-f0-9]{40}|sha256:(?!0{64}$)[a-f0-9]{64}|tag:v?[0-9]+\\.[0-9]+\\.[0-9]+|version:v?[0-9]+\\.[0-9]+\\.[0-9]+)$"},
+        "version": {"$ref": "#/$defs/concrete"}, "policy_digest": {"type": "string", "pattern": "^(?!0{64}$)[a-f0-9]{64}$"}, "payload_digest": {"type": "string", "pattern": "^(?!0{64}$)[a-f0-9]{64}$"},
+        "scopes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/concrete"}, "uniqueItems": true},
+        "operations": {"type": "array", "minItems": 1, "items": {"enum": ["read", "write", "readback"]}, "uniqueItems": true},
+        "write_applicable": {"type": "boolean"}, "write_passed": {"type": "boolean"}, "readback_applicable": {"type": "boolean"}, "readback_passed": {"type": "boolean"}, "readback_matches_payload": {"type": "boolean"}, "authoritative_read": {"type": "boolean"}, "unresolved_unknown": {"const": false}
+      },
+      "allOf": [
+        {"if": {"properties": {"write_applicable": {"const": true}}}, "then": {"properties": {"write_passed": {"const": true}}}},
+        {"if": {"properties": {"readback_applicable": {"const": true}}}, "then": {"properties": {"readback_passed": {"const": true}}}}
+      ]
+    }
+  }
+}

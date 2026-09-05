@@ -1,0 +1,5 @@
+fastapi>=0.141,<1
+uvicorn>=0.29,<1
+cryptography>=50,<51
+pydantic>=2,<3
+anyio>=4,<5

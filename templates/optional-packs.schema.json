@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/optional-packs.schema.json",
+  "title": "Executive Operator optional capability packs",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "default_policy", "resolution_record_schema", "packs"],
+  "properties": {
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "default_policy": {"const": "disabled-until-selected-and-verified"},
+    "resolution_record_schema": {"const": "templates/resolved-capability.schema.json"},
+    "packs": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/pack"}
+    }
+  },
+  "$defs": {
+    "nonEmptyStrings": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "locator", "candidates", "resolution"],
+      "properties": {
+        "kind": {"enum": ["bundled", "official", "discovery-required"]},
+        "locator": {"type": ["string", "null"]},
+        "candidates": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "resolution": {"type": "string", "minLength": 1}
+      }
+    },
+    "pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "default_enabled", "source", "trust", "license", "version_ref", "prerequisites", "permissions", "data_risk", "tests", "fallback", "disable_path"],
+      "properties": {
+        "description": {"type": "string", "minLength": 1},
+        "default_enabled": {"const": false},
+        "source": {"$ref": "#/$defs/source"},
+        "trust": {"enum": ["bundled-reviewed", "official-inspect-before-install", "inspect-before-selection"]},
+        "license": {"type": "string", "minLength": 1},
+        "version_ref": {"type": "string", "minLength": 1},
+        "prerequisites": {"$ref": "#/$defs/nonEmptyStrings"},
+        "permissions": {"$ref": "#/$defs/nonEmptyStrings"},
+        "data_risk": {
+          "type": "object", "additionalProperties": false,
+          "required": ["level", "categories", "boundary"],
+          "properties": {
+            "level": {"enum": ["low", "moderate", "high"]},
+            "categories": {"$ref": "#/$defs/nonEmptyStrings"},
+            "boundary": {"type": "string", "minLength": 1}
+          }
+        },
+        "tests": {"$ref": "#/$defs/nonEmptyStrings"},
+        "fallback": {"type": "string", "minLength": 1},
+        "disable_path": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

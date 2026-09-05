@@ -1,0 +1,60 @@
+version: 1
+status: optional
+connected: false
+adapters:
+  local-filesystem: &adapter
+    implementation: real-local
+    account_id: synthetic-local-owner
+    target_id: synthetic-artifact-vault
+    synthetic: false
+    upload_idempotency: true
+    bound_operation_key: true
+    provider_object_id: true
+    checksum_version_readback: true
+    size_readback: true
+    permission_scope: true
+    retention: true
+    delete: true
+    revoke: true
+    disable: true
+    unknown_effect_reconciliation: true
+  google-drive:
+    <<: *adapter
+    implementation: synthetic-fake
+    account_id: synthetic-google-account
+    target_id: synthetic-google-drive-folder
+    synthetic: true
+  onedrive:
+    <<: *adapter
+    implementation: synthetic-fake
+    account_id: synthetic-microsoft-account
+    target_id: synthetic-onedrive-folder
+    synthetic: true
+  dropbox:
+    <<: *adapter
+    implementation: synthetic-fake
+    account_id: synthetic-dropbox-account
+    target_id: synthetic-dropbox-folder
+    synthetic: true
+  box:
+    <<: *adapter
+    implementation: synthetic-fake
+    account_id: synthetic-box-account
+    target_id: synthetic-box-folder
+    synthetic: true
+  s3-compatible:
+    <<: *adapter
+    implementation: synthetic-fake
+    account_id: synthetic-object-account
+    target_id: synthetic-bucket-prefix
+    synthetic: true
+temporary_share:
+  default_enabled: false
+  reject_sensitive: true
+  explicit_target: true
+  authentication_required: true
+  expiry_required: true
+  revocation_required: true
+  cleanup_required: true
+  https_verification_required: true
+  starts_listener: false

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/capability-status.schema.json",
+  "title": "Exact capability status taxonomy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "statuses", "canonical_meanings", "forbidden_synonyms", "rules"],
+  "properties": {
+    "version": {"const": "1.0.0"},
+    "statuses": {"const": ["Native", "Blueprint", "Bundled", "Configured", "Verified", "Optional", "Planned", "Blocked"]},
+    "canonical_meanings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["Native", "Blueprint", "Bundled", "Configured", "Verified", "Optional", "Planned", "Blocked"],
+      "properties": {
+        "Native": {"type": "string", "minLength": 1}, "Blueprint": {"type": "string", "minLength": 1},
+        "Bundled": {"type": "string", "minLength": 1}, "Configured": {"type": "string", "minLength": 1},
+        "Verified": {"type": "string", "minLength": 1}, "Optional": {"type": "string", "minLength": 1},
+        "Planned": {"type": "string", "minLength": 1}, "Blocked": {"type": "string", "minLength": 1}
+      }
+    },
+    "forbidden_synonyms": {
+      "type": "object", "minProperties": 1,
+      "propertyNames": {"not": {"enum": ["Native", "Blueprint", "Bundled", "Configured", "Verified", "Optional", "Planned", "Blocked"]}},
+      "additionalProperties": {"enum": ["Native", "Blueprint", "Bundled", "Configured", "Verified", "Optional", "Planned", "Blocked"]}
+    },
+    "rules": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+  }
+}

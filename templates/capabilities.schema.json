@@ -1,0 +1,36 @@
+{
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/capabilities.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Executive Operator Blueprint Capability Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "reviewed_with_hermes", "reviewed_upstream_build", "status_labels", "recommended_mode", "modes", "hosting", "capability_packs", "channels", "integration_contract", "notifications", "learning"],
+  "properties": {
+    "version": {"const": "1.1.0"},
+    "reviewed_with_hermes": {"type": "string"},
+    "reviewed_upstream_build": {"type": "string", "pattern": "^[0-9a-f]{8}$"},
+    "status_labels": {"const": ["Native", "Blueprint", "Bundled", "Configured", "Verified", "Optional", "Planned", "Blocked"]},
+    "recommended_mode": {"const": "workload-selected"},
+    "modes": {"type": "object", "required": ["single-agent", "managed-team"]},
+    "hosting": {"type": "object", "required": ["local-desktop", "always-on-vps", "regulated-dedicated"]},
+    "capability_packs": {
+      "type": "object",
+      "minProperties": 10,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["default_requested", "blueprint_status", "activation", "dependencies", "verification"],
+        "properties": {
+          "default_requested": {"type": "boolean"},
+          "blueprint_status": {"enum": ["Native", "Blueprint", "Bundled", "Configured", "Verified", "Optional", "Planned", "Blocked"]},
+          "activation": {"type": "string"},
+          "dependencies": {"type": "array"},
+          "verification": {"type": "array", "minItems": 1}
+        }
+      }
+    },
+    "channels": {"type": "object"},
+    "integration_contract": {"type": "object", "required": ["required_fields", "activation_gate"]},
+    "notifications": {"type": "object"},
+    "learning": {"type": "object"}
+  }
+}

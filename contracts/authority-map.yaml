@@ -1,0 +1,214 @@
+version: 1
+authorities:
+- concept: behavioral-invariants
+  normative_home: SOUL.md
+  explanatory_homes:
+  - README.md
+- concept: task-lifecycle-enums-and-mappings
+  normative_home: contracts/task-lifecycle.yaml
+  explanatory_homes:
+  - docs/23-task-truth-and-kanban.md
+  - README.md
+  - docs/03-tasks-and-scheduling.md
+- concept: task-policy-and-acceptance
+  normative_home: docs/23-task-truth-and-kanban.md
+  explanatory_homes:
+  - README.md
+  - docs/03-tasks-and-scheduling.md
+  - docs/04-delegation.md
+- concept: delegation-and-rework
+  normative_home: docs/04-delegation.md
+  explanatory_homes:
+  - docs/23-task-truth-and-kanban.md
+- concept: approvals-and-action-boundaries
+  normative_home: docs/06-guardrails-and-recovery.md
+  explanatory_homes:
+  - SOUL.md
+  - AI-INSTALL.md
+- concept: evidence-and-artifacts
+  normative_home: docs/24-artifacts-and-storage.md
+  explanatory_homes:
+  - docs/23-task-truth-and-kanban.md
+- concept: budgets-and-retries
+  normative_home: docs/07-cost-and-efficiency.md
+  explanatory_homes:
+  - docs/17-autopilot-and-recovery.md
+- concept: executive-interaction-and-voice
+  normative_home: docs/08-human-side.md
+  explanatory_homes:
+  - SOUL.md
+- concept: scheduling-and-daily-brief
+  normative_home: docs/03-tasks-and-scheduling.md
+  explanatory_homes:
+  - docs/17-autopilot-and-recovery.md
+- concept: conformance-and-compatibility
+  normative_home: docs/13-installation-and-conformance.md
+  explanatory_homes:
+  - README.md
+  - AGENTS.md
+  - AI-INSTALL.md
+- concept: capability-status-taxonomy
+  normative_home: contracts/capability-status.yaml
+  explanatory_homes:
+  - README.md
+  - CAPABILITIES.md
+  - docs/09-roadmap-and-honesty.md
+  - capabilities.yaml
+  - scripts/preflight.py
+  - templates/install-report.schema.json
+- concept: integration-evidence-authority
+  normative_home: contracts/evidence-authorities.json
+  explanatory_homes:
+  - docs/05-integrations-and-skills.md
+  - docs/25-composio.md
+- concept: corrections-and-memory-routing
+  normative_home: docs/02-memory.md
+  explanatory_homes:
+  - docs/23-task-truth-and-kanban.md
+  - ONBOARDING.md
+  - skills/continuity/SKILL.md
+- concept: website-reliability
+  normative_home: docs/17-autopilot-and-recovery.md
+  explanatory_homes:
+  - tools/website-watchdog/README.md
+- concept: secure-credential-delivery
+  normative_home: docs/16-secure-credentials.md
+  explanatory_homes:
+  - tools/secure-credentials/README.md
+- concept: storage-and-preview-adapters
+  normative_home: docs/24-artifacts-and-storage.md
+  explanatory_homes:
+  - tools/artifact-storage/README.md
+- concept: operating-mode-selection
+  normative_home: docs/18-single-agent-and-managed-team.md
+  explanatory_homes:
+  - README.md
+  - ONBOARDING.md
+- concept: controlled-skill-evolution
+  normative_home: docs/20-skills-and-self-evolution.md
+  explanatory_homes:
+  - SKILL-ARCHITECTURE.md
+- concept: provider-neutrality
+  normative_home: docs/15-provider-adapters.md
+  explanatory_homes:
+  - docs/05-integrations-and-skills.md
+  - CAPABILITIES.md
+- concept: professional-executive-operator-experience
+  normative_home: docs/08-human-side.md
+  explanatory_homes:
+  - README.md
+  - ONBOARDING.md
+compatibility:
+  semantic_range: '>=0.21.0,<0.22.0'
+  tested_upstream_build: b51c055a
+  mismatch_policy:
+    read_only_inspection: allowed
+    install: blocked_until_revalidated
+    update: blocked_until_revalidated
+    verified_claims: blocked_until_revalidated
+  consumers:
+    README.md:
+      semantic_range: true
+      tested_upstream_build: true
+    AI-INSTALL.md:
+      semantic_range: true
+      tested_upstream_build: true
+    docs/13-installation-and-conformance.md:
+      semantic_range: true
+      tested_upstream_build: true
+    scripts/preflight.py:
+      authority_loaded: true
+    scripts/install_blueprint.py:
+      authority_loaded: true
+    templates/install-report.schema.json:
+      semantic_range: true
+      tested_upstream_build: true
+    templates/install-report.template.md:
+      semantic_range: true
+      tested_upstream_build: true
+    capabilities.yaml:
+      semantic_range: true
+      tested_upstream_build: true
+task_vocabulary:
+  normative_home: contracts/task-lifecycle.yaml
+schema_test_coverage:
+
+
+  templates/acceptance-policy.schema.json:
+  - tests/test_acceptance_contracts.py
+  templates/acceptance-record.schema.json:
+  - tests/test_acceptance_contracts.py
+  templates/action-intent.schema.json:
+  - tests/test_action_boundary.py
+  templates/action-result.schema.json:
+  - tests/test_action_boundary.py
+  templates/approval-record.schema.json:
+  - tests/test_action_boundary.py
+  templates/artifact-storage-contract.schema.json:
+  - tests/test_artifact_storage.py
+  templates/business-lane-preservation.schema.json:
+  - tests/test_integration_contracts.py
+  templates/capability-status.schema.json:
+  - tests/test_integration_contracts.py
+  templates/authority-map.schema.json:
+  - tests/test_document_authority.py
+  templates/capabilities.schema.json:
+  - tests/test_blueprint.py
+  templates/credential-requirements.schema.json:
+  - tests/test_blueprint.py
+  templates/criterion.schema.json:
+  - tests/test_acceptance_contracts.py
+  templates/correction-record.schema.json:
+  - tests/test_correction_persistence.py
+  templates/daily-brief-routine.schema.json:
+  - tests/test_daily_brief.py
+  templates/delivery-record.schema.json:
+  - tests/test_daily_brief.py
+  templates/extension-registry.schema.json:
+  - tests/test_blueprint.py
+  templates/enforcement-coverage.schema.json:
+  - tests/test_enforcement_coverage.py
+  templates/evidence-authorities.schema.json:
+  - tests/test_integration_contracts.py
+  templates/executive-operator-conformance.schema.json:
+  - tests/test_conformance_runner.py
+  templates/install-report.schema.json:
+  - tests/test_installer.py
+  templates/install.answers.schema.json:
+  - tests/test_installer.py
+  templates/integration-registry.schema.json:
+  - tests/test_blueprint.py
+  templates/optional-packs.schema.json:
+  - tests/test_blueprint.py
+  templates/rework-brief.schema.json:
+  - tests/test_acceptance_contracts.py
+  templates/resolved-capability.schema.json:
+  - tests/test_blueprint.py
+  templates/specialist-contract.schema.json:
+  - tests/test_managed_team_contract.py
+  templates/specialist-retirement.schema.json:
+  - tests/test_managed_team_contract.py
+  templates/task-contract.schema.json:
+  - tests/test_task_contracts.py
+  templates/task-lifecycle.schema.json:
+  - tests/test_task_contracts.py
+  templates/verification-result.schema.json:
+  - tests/test_acceptance_contracts.py
+  templates/voice-profile.schema.json:
+  - tests/test_voice_profile.py
+  templates/website-registry.schema.json:
+  - tests/test_website_reliability_contract.py
+  tools/website-watchdog/incident.schema.json:
+  - tests/test_website_watchdog.py
+  tools/website-watchdog/repair-handoff.schema.json:
+  - tests/test_website_reliability_contract.py
+  tools/website-watchdog/sites.schema.json:
+  - tests/test_website_watchdog.py
+  templates/public-release-audit-report.schema.json:
+  - tests/test_public_release_audit.py
+  templates/public-release-policy.schema.json:
+  - tests/test_public_release_audit.py
+mcp:
+  baseline: omitted_no_servers_configured
+  native_install_test: passes_with_and_without_mcp_json
+  example: templates/mcp.example.json

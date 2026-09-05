@@ -1,0 +1,13 @@
+name: operator-control
+version: "1.1.0"
+enabled: false
+hooks:
+  - pre_tool_call
+provides_hooks:
+  - pre_tool_call
+provides_tools:
+  - operator_control_execute
+notes: pre_tool_call is defense-in-depth only; the configured broker and reviewed adapter reauthorize at the effect boundary
+description: Fail-closed managed action broker; disabled until explicitly configured and enabled.
+interfaces:
+  corrections: adapter-injected; existing authorities remain canonical

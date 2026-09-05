@@ -1,0 +1,32 @@
+{
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/evidence-authorities.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Protected Integration Evidence Authorities",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "signer", "digest_purpose", "authorities"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "signer": {"const": "eob-reviewed-authority-v1"},
+    "digest_purpose": {"const": "public-sha256-content-integrity-pins"},
+    "authorities": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "provider", "kind", "url", "mutable", "title", "content_digest", "required_assertions"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9_-]+$"},
+          "provider": {"enum": ["google", "composio"]},
+          "kind": {"enum": ["source", "documentation", "pricing", "plan", "tool_limits", "trigger_limits", "scopes", "data_policy", "cost", "write_behavior"]},
+          "url": {"type": "string", "format": "uri", "pattern": "^https://"},
+          "immutable_ref": {"type": "string", "pattern": "^commit:[a-f0-9]{40}$"},
+          "reviewed_at": {"type": "string", "format": "date-time"},
+          "mutable": {"type": "boolean"},
+          "title": {"type": "string", "minLength": 1},
+          "content_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "required_assertions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "mcp_servers": {
+    "crm": {
+      "transport": "http",
+      "url": "https://crm.example.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${CRM_MCP_TOKEN}"
+      },
+      "enabled": false
+    },
+    "business-tools": {
+      "transport": "stdio",
+      "command": "example-mcp-command",
+      "args": [],
+      "enabled": false
+    }
+  }
+}

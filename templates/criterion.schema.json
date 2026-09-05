@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/criterion.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["criterion_id", "description", "required", "affected_by", "evidence_kinds", "verifier_kind"],
+  "properties": {
+    "criterion_id": {"type": "string", "pattern": "^[A-Za-z0-9._-]+$"},
+    "description": {"type": "string", "minLength": 1},
+    "required": {"type": "boolean"},
+    "affected_by": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["artifact", "input", "requirement", "target", "environment", "policy"]}},
+    "evidence_kinds": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "verifier_kind": {"enum": ["deterministic", "provider-readback", "reviewer"]}
+  }
+}

@@ -1,0 +1,34 @@
+contract_version: "1.0"
+contract_class: full
+durable_task: true
+work_class: delegated-work
+consequences:
+  external_write: false
+  delegated: true
+  dependency: false
+  sensitive_data: false
+  material_cost: false
+  cancellation_risk: false
+  long_lived_follow_up: false
+risk_flags: [delegated]
+outcome: Produce a reviewed release-readiness report.
+owner: main-operator
+next_action: Dispatch the versioned brief to the reviewer.
+artifact_or_source: artifacts/release-readiness.md
+resume_point: Inputs identified; no worker dispatched.
+completion_check: Every required criterion passes against the current artifact.
+target: candidate release artifact
+scope: Inspect the candidate and report release blockers.
+exclusions: [publishing, external writes]
+requirement_version: req-1
+criteria: [Required checks are cited, Every blocker names evidence]
+authority: principal-approved requirement req-1
+dependencies: []
+limits:
+  timeout_minutes: 30
+  external_writes: false
+checkpoint: Save findings and the next unchecked criterion after each section.
+recovery: Resume from the saved criterion; do not repeat external effects.
+evidence_method: Attach deterministic test output and cited file locations.
+reviewer: main-operator
+return_contract: Return summary, artifacts, evidence, unresolved items, and next action.

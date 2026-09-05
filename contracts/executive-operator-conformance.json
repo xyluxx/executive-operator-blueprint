@@ -1,0 +1,856 @@
+{
+  "schema_version": 1,
+  "source": "Executive Operator Blueprint 10/10 Addendum sections 21 and Tasks 15-19",
+  "claim_scope": "reference-synthetic",
+  "scenarios": [
+    {
+      "id": "C01",
+      "requirement": "No evidence cannot pass acceptance",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/operator-control/acceptance.py",
+      "failure_path": "If tests/test_operator_state.py::test_done_requires_evidence fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_operator_state.py::test_done_requires_evidence"
+      ]
+    },
+    {
+      "id": "C02",
+      "requirement": "Irrelevant evidence is rejected or inconclusive",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/operator-control/acceptance.py",
+      "failure_path": "If tests/test_control_final_blockers.py::test_evidence_requires_opened_content_protected_verifier_retention_and_bindings fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_control_final_blockers.py::test_evidence_requires_opened_content_protected_verifier_retention_and_bindings"
+      ]
+    },
+    {
+      "id": "C03",
+      "requirement": "Partial required criteria leave task open",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/operator-control/acceptance.py",
+      "failure_path": "If tests/test_task_contracts.py::test_partial_task_stays_open_with_minimal_resume_information fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_task_contracts.py::test_partial_task_stays_open_with_minimal_resume_information"
+      ]
+    },
+    {
+      "id": "C04",
+      "requirement": "Requirement version change invalidates old evidence",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/operator-control/acceptance.py",
+      "failure_path": "If tests/test_acceptance_adversarial.py::test_stale_or_wrong_bound_evidence_rejects fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_acceptance_adversarial.py::test_stale_or_wrong_bound_evidence_rejects"
+      ]
+    },
+    {
+      "id": "C05",
+      "requirement": "Worker cannot weaken protected policy or tests",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/operator-control/acceptance.py",
+      "failure_path": "If tests/test_acceptance_adversarial.py::test_worker_policy_and_asserted_fake_uri_cannot_authorize fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_acceptance_adversarial.py::test_worker_policy_and_asserted_fake_uri_cannot_authorize"
+      ]
+    },
+    {
+      "id": "C06",
+      "requirement": "Wrong target or artifact evidence is rejected",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/operator-control/acceptance.py",
+      "failure_path": "If tests/test_control_boundary_adversarial.py::test_readback_must_bind_every_protected_dimension fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_control_boundary_adversarial.py::test_readback_must_bind_every_protected_dimension"
+      ]
+    },
+    {
+      "id": "C07",
+      "requirement": "Inaccessible verifier source does not pass",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/operator-control/acceptance.py",
+      "failure_path": "If tests/test_integration_contracts.py::test_authority_rejects_unavailable_fetch_redirect_and_fake_assertions fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_integration_contracts.py::test_authority_rejects_unavailable_fetch_redirect_and_fake_assertions"
+      ]
+    },
+    {
+      "id": "C08",
+      "requirement": "Verifier crash leaves work unaccepted and recorded",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/operator-control/acceptance.py",
+      "failure_path": "If tests/test_control_boundary_adversarial.py::test_every_provider_exception_persists_unknown_and_can_be_boundedly_reconciled fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_control_boundary_adversarial.py::test_every_provider_exception_persists_unknown_and_can_be_boundedly_reconciled"
+      ]
+    },
+    {
+      "id": "C09",
+      "requirement": "Verifier disagreement requires stronger resolution",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/operator-control/acceptance.py",
+      "failure_path": "If tests/test_acceptance_adversarial.py::test_signed_bound_review_and_three_way_separation_required fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_acceptance_adversarial.py::test_signed_bound_review_and_three_way_separation_required"
+      ]
+    },
+    {
+      "id": "C10",
+      "requirement": "Unsupported citation fails source-to-claim review",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/operator-control/acceptance.py",
+      "failure_path": "If tests/test_integration_contracts.py::test_semantic_registry_review_rejects_superficial_evidence[license-unknown] fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_integration_contracts.py::test_semantic_registry_review_rejects_superficial_evidence[license-unknown]"
+      ]
+    },
+    {
+      "id": "C11",
+      "requirement": "Untrusted email document web tool and worker instructions cannot change controls",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_action_boundary.py::test_untrusted_content_cannot_supply_control_fields fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_action_boundary.py::test_untrusted_content_cannot_supply_control_fields"
+      ]
+    },
+    {
+      "id": "C12",
+      "requirement": "Repair regression prevents acceptance",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_orchestration_edges.py::test_parent_needs_integrated_acceptance_for_incompatible_children_and_merge_regression fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_orchestration_edges.py::test_parent_needs_integrated_acceptance_for_incompatible_children_and_merge_regression"
+      ]
+    },
+    {
+      "id": "C13",
+      "requirement": "Repeated repair respects shared retry limit",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_website_reliability_contract.py::test_failed_bounded_repair_escalates_but_routine_success_is_quiet fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_website_reliability_contract.py::test_failed_bounded_repair_escalates_but_routine_success_is_quiet"
+      ]
+    },
+    {
+      "id": "C14",
+      "requirement": "Reassignment preserves budget deadline and repair history",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_orchestration_edges.py::test_reassignment_preserves_total_budget_deadline_and_repair_history fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_orchestration_edges.py::test_reassignment_preserves_total_budget_deadline_and_repair_history"
+      ]
+    },
+    {
+      "id": "C15",
+      "requirement": "Submitted but unaccepted dependency remains blocked",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_action_boundary.py::test_direct_unaccepted_completion_is_observed_but_downstream_refused fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_action_boundary.py::test_direct_unaccepted_completion_is_observed_but_downstream_refused"
+      ]
+    },
+    {
+      "id": "C16",
+      "requirement": "Changed accepted upstream invalidates affected descendants",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_orchestration_edges.py::test_bounded_rework_keeps_unaffected_passing_results fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_orchestration_edges.py::test_bounded_rework_keeps_unaffected_passing_results"
+      ]
+    },
+    {
+      "id": "C17",
+      "requirement": "Dependency cycles are rejected before dispatch",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_orchestration_edges.py::test_dependency_cycles_rejected_before_dispatch_and_replan fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_orchestration_edges.py::test_dependency_cycles_rejected_before_dispatch_and_replan"
+      ]
+    },
+    {
+      "id": "C18",
+      "requirement": "Incompatible accepted children fail parent acceptance",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_orchestration_edges.py::test_parent_needs_integrated_acceptance_for_incompatible_children_and_merge_regression fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_orchestration_edges.py::test_parent_needs_integrated_acceptance_for_incompatible_children_and_merge_regression"
+      ]
+    },
+    {
+      "id": "C19",
+      "requirement": "Concurrent exact-target writers admit only one",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_managed_team_enforcement.py::test_two_workers_get_exactly_one_writer_for_one_target fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_managed_team_enforcement.py::test_two_workers_get_exactly_one_writer_for_one_target"
+      ]
+    },
+    {
+      "id": "C20",
+      "requirement": "Stale worker and callback are fenced at protected boundary",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_managed_team_enforcement.py::test_worker_disappearance_reclaim_fences_stale_replacement_return fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_managed_team_enforcement.py::test_worker_disappearance_reclaim_fences_stale_replacement_return"
+      ]
+    },
+    {
+      "id": "C21",
+      "requirement": "Merged branch regression blocks parent completion",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_orchestration_edges.py::test_parent_needs_integrated_acceptance_for_incompatible_children_and_merge_regression fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_orchestration_edges.py::test_parent_needs_integrated_acceptance_for_incompatible_children_and_merge_regression"
+      ]
+    },
+    {
+      "id": "C22",
+      "requirement": "Duplicate intake and callback cause no duplicate transition",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_managed_team_enforcement.py::test_stale_or_duplicate_callback_is_rejected fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_managed_team_enforcement.py::test_stale_or_duplicate_callback_is_rejected"
+      ]
+    },
+    {
+      "id": "C23",
+      "requirement": "Timeout after external success reconciles without duplicate effect",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_action_boundary.py::test_timeout_after_possible_success_is_unknown_and_blocks_retry fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_action_boundary.py::test_timeout_after_possible_success_is_unknown_and_blocks_retry"
+      ]
+    },
+    {
+      "id": "C24",
+      "requirement": "Delayed readback remains uncertain within bounded reconciliation",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_calendar_contract.py::test_calendar_explicit_reconcile_delayed_failure_and_still_unknown fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_calendar_contract.py::test_calendar_explicit_reconcile_delayed_failure_and_still_unknown"
+      ]
+    },
+    {
+      "id": "C25",
+      "requirement": "Crash after external effect reconciles intent before retry",
+      "authority": "contracts/task-lifecycle.yaml",
+      "implementation_path": "tools/task-reconciliation/reconcile.py",
+      "failure_path": "If tests/test_task_reconciliation.py::test_fresh_engine_recovers_receipt_after_crash_before_state_checkpoint fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_task_reconciliation.py::test_fresh_engine_recovers_receipt_after_crash_before_state_checkpoint"
+      ]
+    },
+    {
+      "id": "C26",
+      "requirement": "State conflict between review and acceptance is detected",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_managed_hardening.py::test_effect_boundary_rereads_native_upstream_and_broker_acceptance_not_downstream_copy fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_managed_hardening.py::test_effect_boundary_rereads_native_upstream_and_broker_acceptance_not_downstream_copy"
+      ]
+    },
+    {
+      "id": "C27",
+      "requirement": "Acceptance commit release recovery avoids duplicate execution",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_correction_persistence.py::test_retry_reconciles_crash_after_authority_apply_instead_of_going_stale fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_correction_persistence.py::test_retry_reconciles_crash_after_authority_apply_instead_of_going_stale"
+      ]
+    },
+    {
+      "id": "C28",
+      "requirement": "Expired or withdrawn approval blocks action",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_action_boundary.py::test_missing_expired_withdrawn_and_mutated_approval_fail_closed fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_action_boundary.py::test_missing_expired_withdrawn_and_mutated_approval_fail_closed"
+      ]
+    },
+    {
+      "id": "C29",
+      "requirement": "Material payload change invalidates prior approval",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_action_boundary.py::test_missing_expired_withdrawn_and_mutated_approval_fail_closed fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_action_boundary.py::test_missing_expired_withdrawn_and_mutated_approval_fail_closed"
+      ]
+    },
+    {
+      "id": "C30",
+      "requirement": "Exception closure remains visible and is not verified success",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_acceptance_adversarial.py::test_unsigned_human_exception_does_not_close fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_acceptance_adversarial.py::test_unsigned_human_exception_does_not_close"
+      ]
+    },
+    {
+      "id": "C31",
+      "requirement": "Cancellation race stops new action and reconciles issued effects",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "tools/operator-control/broker.py",
+      "failure_path": "If tests/test_orchestration_edges.py::test_cancellation_blocks_dispatch_revokes_authority_and_reconciles_unknown fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_orchestration_edges.py::test_cancellation_blocks_dispatch_revokes_authority_and_reconciles_unknown"
+      ]
+    },
+    {
+      "id": "C32",
+      "requirement": "Fresh session resumes exact task artifact and next action",
+      "authority": "contracts/task-lifecycle.yaml",
+      "implementation_path": "tools/task-reconciliation/reconcile.py",
+      "failure_path": "If tests/test_task_reconciliation.py::test_partial_evidence_preserves_checkpoint_and_fresh_engine_resumes_same_card fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_task_reconciliation.py::test_partial_evidence_preserves_checkpoint_and_fresh_engine_resumes_same_card"
+      ]
+    },
+    {
+      "id": "C33",
+      "requirement": "Execution allowance preserves verification reserve",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "plugins/operator-control/managed.py",
+      "failure_path": "If tests/test_orchestration_edges.py::test_concurrent_admission_reserves_verification_budget fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_orchestration_edges.py::test_concurrent_admission_reserves_verification_budget"
+      ]
+    },
+    {
+      "id": "C34",
+      "requirement": "Concurrent budget reservations enforce configured total",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "plugins/operator-control/managed.py",
+      "failure_path": "If tests/test_orchestration_edges.py::test_concurrent_admission_reserves_verification_budget fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_orchestration_edges.py::test_concurrent_admission_reserves_verification_budget"
+      ]
+    },
+    {
+      "id": "C35",
+      "requirement": "Blocked task records next owner and wake condition",
+      "authority": "contracts/task-lifecycle.yaml",
+      "implementation_path": "tools/task-reconciliation/reconcile.py",
+      "failure_path": "If tests/test_task_reconciliation.py::test_blocked_observation_records_native_status_owner_and_wake_condition fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_task_reconciliation.py::test_blocked_observation_records_native_status_owner_and_wake_condition"
+      ]
+    },
+    {
+      "id": "C36",
+      "requirement": "Evidence deletion leaves non-sensitive audit record",
+      "authority": "docs/24-artifacts-and-storage.md",
+      "implementation_path": "tools/artifact-storage/artifact_storage.py",
+      "failure_path": "If tests/test_artifact_storage.py::test_deletion_leaves_only_non_sensitive_audit_tombstone fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_artifact_storage.py::test_deletion_leaves_only_non_sensitive_audit_tombstone"
+      ]
+    },
+    {
+      "id": "C37",
+      "requirement": "Cross-client context access is denied",
+      "authority": "contracts/enforcement-coverage.yaml",
+      "implementation_path": "plugins/operator-control/managed.py",
+      "failure_path": "If tests/test_correction_persistence.py::test_cross_client_scope_isolation_and_no_global_memory_pollution fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_correction_persistence.py::test_cross_client_scope_isolation_and_no_global_memory_pollution"
+      ]
+    },
+    {
+      "id": "C38",
+      "requirement": "Simple read-only question uses smallest valid path",
+      "authority": "contracts/task-lifecycle.yaml",
+      "implementation_path": "tools/operator-state/operator_state.py",
+      "failure_path": "If tests/test_task_contracts.py::test_ephemeral_answer_creates_no_durable_task fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_task_contracts.py::test_ephemeral_answer_creates_no_durable_task"
+      ]
+    },
+    {
+      "id": "C39",
+      "requirement": "Consequential choice produces complete decision boundary",
+      "authority": "contracts/task-lifecycle.yaml",
+      "implementation_path": "tools/operator-state/operator_state.py",
+      "failure_path": "If tests/test_task_contracts.py::test_consequential_or_delegated_work_requires_full_contract fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_task_contracts.py::test_consequential_or_delegated_work_requires_full_contract"
+      ]
+    },
+    {
+      "id": "C40",
+      "requirement": "Learned skill cannot expand authority without review",
+      "authority": "docs/20-skills-and-self-evolution.md",
+      "implementation_path": "scripts/validate_skill_authority.py",
+      "failure_path": "If tests/test_skill_architecture.py::test_learned_skill_cannot_expand_authority_without_new_review fails, this scenario enters FAIL and skill activation remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_skill_architecture.py::test_learned_skill_cannot_expand_authority_without_new_review"
+      ]
+    },
+    {
+      "id": "T15-RECONCILE",
+      "requirement": "Conversation meeting email and calendar reconcile into one task",
+      "authority": "contracts/task-lifecycle.yaml",
+      "implementation_path": "tools/task-reconciliation/reconcile.py",
+      "failure_path": "If tests/test_task_reconciliation.py::test_replay_across_conversation_email_meeting_and_calendar_updates_one_native_card fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_task_reconciliation.py::test_replay_across_conversation_email_meeting_and_calendar_updates_one_native_card"
+      ]
+    },
+    {
+      "id": "T15-MANUAL-CARD",
+      "requirement": "Unassigned manual card remains inert and editable",
+      "authority": "contracts/task-lifecycle.yaml",
+      "implementation_path": "tools/task-reconciliation/reconcile.py",
+      "failure_path": "If tests/test_task_reconciliation.py::test_manual_unassigned_card_is_editable_and_not_claimed_by_title_match fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_task_reconciliation.py::test_manual_unassigned_card_is_editable_and_not_claimed_by_title_match"
+      ]
+    },
+    {
+      "id": "T15-MEETING",
+      "requirement": "Verified meeting completes once with one acknowledgment",
+      "authority": "contracts/task-lifecycle.yaml",
+      "implementation_path": "tools/task-reconciliation/reconcile.py",
+      "failure_path": "If tests/test_task_reconciliation.py::test_verified_same_meeting_and_all_topics_complete_once_with_next_task fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_task_reconciliation.py::test_verified_same_meeting_and_all_topics_complete_once_with_next_task"
+      ]
+    },
+    {
+      "id": "T15-RESTART",
+      "requirement": "Restart resumes the exact persisted checkpoint",
+      "authority": "contracts/task-lifecycle.yaml",
+      "implementation_path": "tools/task-reconciliation/reconcile.py",
+      "failure_path": "If tests/test_task_reconciliation.py::test_partial_evidence_preserves_checkpoint_and_fresh_engine_resumes_same_card fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_task_reconciliation.py::test_partial_evidence_preserves_checkpoint_and_fresh_engine_resumes_same_card"
+      ]
+    },
+    {
+      "id": "T16-REGISTRY",
+      "requirement": "Website registry is complete and exact",
+      "authority": "contracts/preflight-inventory.yaml",
+      "implementation_path": "tools/website-watchdog/watchdog.py",
+      "failure_path": "If tests/test_website_reliability_contract.py::test_registry_reconciliation_is_exact_and_reports_all_drift_classes fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_website_reliability_contract.py::test_registry_reconciliation_is_exact_and_reports_all_drift_classes"
+      ]
+    },
+    {
+      "id": "T16-FALSE-ALARM",
+      "requirement": "Website monitor suppresses false alarms",
+      "authority": "contracts/preflight-inventory.yaml",
+      "implementation_path": "tools/website-watchdog/watchdog.py",
+      "failure_path": "If tests/test_website_adversarial_hardening.py::test_shared_dns_failure_suppresses_mass_site_incidents fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_website_adversarial_hardening.py::test_shared_dns_failure_suppresses_mass_site_incidents"
+      ]
+    },
+    {
+      "id": "T16-CRASH-REPLAY",
+      "requirement": "Website occurrence crash replay is idempotent",
+      "authority": "contracts/preflight-inventory.yaml",
+      "implementation_path": "tools/website-watchdog/watchdog.py",
+      "failure_path": "If tests/test_website_adversarial_hardening.py::test_occurrence_is_claimed_before_effects_and_replay_cannot_duplicate fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_website_adversarial_hardening.py::test_occurrence_is_claimed_before_effects_and_replay_cannot_duplicate"
+      ]
+    },
+    {
+      "id": "T16-REPAIR",
+      "requirement": "Website repair uses authoritative broker and health readback",
+      "authority": "contracts/preflight-inventory.yaml",
+      "implementation_path": "tools/website-watchdog/watchdog.py",
+      "failure_path": "If tests/test_website_adversarial_hardening.py::test_repair_requires_all_authoritative_readbacks_and_rereads_around_effect fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_website_adversarial_hardening.py::test_repair_requires_all_authoritative_readbacks_and_rereads_around_effect"
+      ]
+    },
+    {
+      "id": "T16-CREDENTIAL",
+      "requirement": "Website credential route records broker receipt",
+      "authority": "contracts/preflight-inventory.yaml",
+      "implementation_path": "tools/website-watchdog/watchdog.py",
+      "failure_path": "If tests/test_website_adversarial_hardening.py::test_action_broker_owns_signed_persisted_credential_handles_and_receipts fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_website_adversarial_hardening.py::test_action_broker_owns_signed_persisted_credential_handles_and_receipts"
+      ]
+    },
+    {
+      "id": "T17-FORMATS",
+      "requirement": "Real CSV XLSX DOCX and PDF roundtrip through verifiers",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/artifact-storage/artifact_storage.py",
+      "failure_path": "If tests/test_artifact_storage.py::test_generate_real_office_files_and_reopen_expected_content fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_artifact_storage.py::test_generate_real_office_files_and_reopen_expected_content"
+      ]
+    },
+    {
+      "id": "T17-PREVIEW",
+      "requirement": "Artifact preview remains local and truthfully scoped",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/artifact-storage/artifact_storage.py",
+      "failure_path": "If tests/test_artifact_storage.py::test_preview_metadata_uses_local_media_and_never_claims_delivery fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_artifact_storage.py::test_preview_metadata_uses_local_media_and_never_claims_delivery"
+      ]
+    },
+    {
+      "id": "T17-SHARE",
+      "requirement": "Temporary share is bounded safe expiring and revocable",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/artifact-storage/artifact_storage.py",
+      "failure_path": "If tests/test_artifact_storage.py::test_temporary_share_expiration_revocation_cleanup_and_no_listener fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_artifact_storage.py::test_temporary_share_expiration_revocation_cleanup_and_no_listener"
+      ]
+    },
+    {
+      "id": "T17-STORAGE-LIFECYCLE",
+      "requirement": "Unknown storage effect reconciles and revoke disable are verified",
+      "authority": "contracts/evidence-authorities.json",
+      "implementation_path": "tools/artifact-storage/artifact_storage.py",
+      "failure_path": "If tests/test_artifact_storage_hardening.py::test_unknown_effect_and_idempotency_survive_adapter_restart fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_artifact_storage_hardening.py::test_unknown_effect_and_idempotency_survive_adapter_restart"
+      ]
+    },
+    {
+      "id": "T18-OFFICIAL-EVIDENCE",
+      "requirement": "Integration requires exact authenticated official evidence",
+      "authority": "contracts/capability-status.yaml",
+      "implementation_path": "tools/integration-contract/integration_contract.py",
+      "failure_path": "If tests/test_integration_contracts.py::test_composio_stale_or_missing_official_evidence_blocks_promotion fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_integration_contracts.py::test_composio_stale_or_missing_official_evidence_blocks_promotion"
+      ]
+    },
+    {
+      "id": "T18-DISABLED",
+      "requirement": "Composio and Sheets remain optional unconfigured and disabled",
+      "authority": "contracts/capability-status.yaml",
+      "implementation_path": "tools/integration-contract/integration_contract.py",
+      "failure_path": "If tests/test_integration_contracts.py::test_optional_composio_and_sheets_are_inventoried_unconfigured_and_disabled fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_integration_contracts.py::test_optional_composio_and_sheets_are_inventoried_unconfigured_and_disabled"
+      ]
+    },
+    {
+      "id": "T18-STATUS",
+      "requirement": "Capability status taxonomy is exact and fail-closed",
+      "authority": "contracts/capability-status.yaml",
+      "implementation_path": "tools/integration-contract/integration_contract.py",
+      "failure_path": "If tests/test_integration_contracts.py::test_capability_status_taxonomy_is_exact_and_rejects_synonyms_and_false_promotion fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_integration_contracts.py::test_capability_status_taxonomy_is_exact_and_rejects_synonyms_and_false_promotion"
+      ]
+    },
+    {
+      "id": "T19-CONTRIBUTOR",
+      "requirement": "Public contributor gate detects unauthorized contributors",
+      "authority": "contracts/public-release-policy.yaml",
+      "implementation_path": "scripts/audit_public_release.py",
+      "failure_path": "If tests/test_public_release_audit.py::test_extra_collaborator_fails fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_public_release_audit.py::test_extra_collaborator_fails"
+      ]
+    },
+    {
+      "id": "T19-HERO",
+      "requirement": "Public hero and brand assets satisfy release contract",
+      "authority": "contracts/public-release-policy.yaml",
+      "implementation_path": "scripts/audit_public_release.py",
+      "failure_path": "If tests/test_blueprint.py::test_responsive_brand_assets_are_outlined_and_self_contained fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_blueprint.py::test_responsive_brand_assets_are_outlined_and_self_contained"
+      ]
+    },
+    {
+      "id": "T19-RELEASE",
+      "requirement": "Public release gates validate archive tag checksum and policy",
+      "authority": "contracts/public-release-policy.yaml",
+      "implementation_path": "scripts/audit_public_release.py",
+      "failure_path": "If tests/test_public_release_audit.py::test_clean_baseline_passes_and_report_matches_schema fails, this scenario enters FAIL and acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_public_release_audit.py::test_clean_baseline_passes_and_report_matches_schema"
+      ]
+    },
+    {
+      "id": "T16-FAST-CREDENTIAL",
+      "requirement": "Vault credential reaches a bound one-time delivery link without setup audit",
+      "authority": "docs/16-secure-credentials.md",
+      "implementation_path": "tools/secure-credentials/secure_credentials/vault.py",
+      "failure_path": "If tests/test_secure_credentials.py::test_vault_can_create_submitted_delivery_link fails, this scenario enters FAIL and the capability remains unavailable.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_secure_credentials.py::test_vault_can_create_submitted_delivery_link"
+      ]
+    },
+    {
+      "id": "T18-MODE-SELECTION",
+      "requirement": "Single-agent and managed-team modes are selected by workload without a mandatory trial",
+      "authority": "docs/18-single-agent-and-managed-team.md",
+      "implementation_path": "plugins/operator-control/managed.py",
+      "failure_path": "If any required evidence test fails (tests/test_blueprint.py::test_machine_readable_catalog_selects_either_first_class_mode_by_need, tests/test_managed_team_contract.py::test_mode_selection_has_no_mandatory_single_operator_trial), this scenario enters FAIL and the capability remains unavailable.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_blueprint.py::test_machine_readable_catalog_selects_either_first_class_mode_by_need",
+        "tests/test_managed_team_contract.py::test_mode_selection_has_no_mandatory_single_operator_trial"
+      ]
+    },
+    {
+      "id": "T18-PROVIDER-NEUTRAL",
+      "requirement": "Provider-neutral contracts prove synthetic behavior before separate live verification",
+      "authority": "docs/15-provider-adapters.md",
+      "implementation_path": "tools/integration-contract/integration_contract.py",
+      "failure_path": "If tests/test_integration_contracts.py::test_provider_neutral_harness_proves_synthetic_then_separate_live_read_write_readback fails, this scenario enters FAIL and the capability remains unavailable.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_integration_contracts.py::test_provider_neutral_harness_proves_synthetic_then_separate_live_read_write_readback"
+      ]
+    },
+    {
+      "id": "T19-CONTROLLED-EVOLUTION",
+      "requirement": "Skill evolution cannot promote unreviewed or untested capability",
+      "authority": "docs/20-skills-and-self-evolution.md",
+      "implementation_path": "scripts/validate_blueprint.py",
+      "failure_path": "If any required evidence test fails (tests/test_skill_architecture.py::test_catalog_does_not_vendor_unreviewed_community_skills, tests/test_skill_architecture.py::test_skill_evolution_authority_lists_core_and_requires_review_before_enablement), this scenario enters FAIL and the capability remains unavailable.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_skill_architecture.py::test_catalog_does_not_vendor_unreviewed_community_skills",
+        "tests/test_skill_architecture.py::test_skill_evolution_authority_lists_core_and_requires_review_before_enablement"
+      ]
+    },
+    {
+      "id": "T19-PRODUCT-EXPERIENCE",
+      "requirement": "Executive-operator distribution presents one coherent public front door and honest paths",
+      "authority": "docs/08-human-side.md",
+      "implementation_path": "scripts/install_blueprint.py",
+      "failure_path": "If any required evidence test fails (tests/test_blueprint.py::test_root_readme_is_the_single_public_front_door, tests/test_blueprint.py::test_responsive_brand_assets_are_outlined_and_self_contained), this scenario enters FAIL and the capability remains unavailable.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_blueprint.py::test_root_readme_is_the_single_public_front_door",
+        "tests/test_blueprint.py::test_responsive_brand_assets_are_outlined_and_self_contained"
+      ]
+    },
+    {
+      "id": "PENDING-SOUL-AGENTS",
+      "requirement": "Protected SOUL.md and AGENTS.md remain aligned with the canonical lifecycle, compatibility, authority, and enforcement contracts",
+      "authority": "contracts/authority-map.yaml",
+      "implementation_path": "SOUL.md",
+      "failure_path": "If either protected-contract test fails (tests/test_blueprint.py::test_soul_enforces_continuity_truth_and_approval, tests/test_blueprint.py::test_agents_enforces_authority_compatibility_and_protected_boundaries), this scenario enters FAIL and release acceptance remains blocked.",
+      "required": true,
+      "expected_state": "reference-synthetic-pass",
+      "claim_scope": "reference-synthetic",
+      "evidence_test_node_ids": [
+        "tests/test_blueprint.py::test_soul_enforces_continuity_truth_and_approval",
+        "tests/test_blueprint.py::test_agents_enforces_authority_compatibility_and_protected_boundaries"
+      ]
+    }
+  ]
+}

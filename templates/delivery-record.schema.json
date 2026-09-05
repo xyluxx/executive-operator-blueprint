@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/delivery-record.schema.json",
+  "title": "Verified daily brief delivery record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "routine_id", "scheduled_occurrence", "operation_key", "channel", "recipient", "content_digest", "state", "created_at", "provider_delivery_id", "delivered_at", "reconciliation"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "routine_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+    "scheduled_occurrence": {"type": "string", "format": "date-time"},
+    "operation_key": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "channel": {"type": "string", "minLength": 1, "maxLength": 128},
+    "recipient": {"type": "string", "minLength": 1, "maxLength": 256},
+    "content_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "state": {"enum": ["pending", "confirmed-success", "confirmed-failure", "unknown"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "provider_delivery_id": {"type": ["string", "null"], "minLength": 1, "maxLength": 256},
+    "delivered_at": {"type": ["string", "null"], "format": "date-time"},
+    "reconciliation": {"enum": ["pending", "not-required", "found-after-unknown", "not-found-after-unknown", "readback-mismatch", "provider-confirmed-failure"]}
+  },
+  "allOf": [{
+    "if": {"properties": {"state": {"const": "confirmed-success"}}, "required": ["state"]},
+    "then": {
+      "properties": {
+        "provider_delivery_id": {"type": "string"},
+        "delivered_at": {"type": "string", "format": "date-time"}
+      }
+    }
+  }]
+}

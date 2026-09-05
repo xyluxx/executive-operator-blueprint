@@ -1,0 +1,817 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/task-contract.schema.json",
+  "title": "Proportional task contract",
+  "$defs": {
+    "text": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "work_class": {
+      "enum": [
+        "disposable-answer",
+        "internal-read-only",
+        "reversible-internal",
+        "message-send",
+        "invitation",
+        "deployment",
+        "purchase",
+        "access-change",
+        "credential-change",
+        "production-action",
+        "bulk-write",
+        "deletion",
+        "delegated-work",
+        "durable-schedule"
+      ]
+    },
+    "consequences": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "external_write",
+        "delegated",
+        "dependency",
+        "sensitive_data",
+        "material_cost",
+        "cancellation_risk",
+        "long_lived_follow_up"
+      ],
+      "properties": {
+        "external_write": {
+          "type": "boolean"
+        },
+        "delegated": {
+          "type": "boolean"
+        },
+        "dependency": {
+          "type": "boolean"
+        },
+        "sensitive_data": {
+          "type": "boolean"
+        },
+        "material_cost": {
+          "type": "boolean"
+        },
+        "cancellation_risk": {
+          "type": "boolean"
+        },
+        "long_lived_follow_up": {
+          "type": "boolean"
+        }
+      }
+    },
+    "no_consequences": {
+      "const": {
+        "external_write": false,
+        "delegated": false,
+        "dependency": false,
+        "sensitive_data": false,
+        "material_cost": false,
+        "cancellation_risk": false,
+        "long_lived_follow_up": false
+      }
+    },
+    "risk_flags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "external-write",
+          "delegated",
+          "dependency",
+          "sensitive-data",
+          "material-cost",
+          "cancellation-risk",
+          "long-lived-follow-up"
+        ]
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "title": "Ephemeral contract",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "contract_class",
+        "durable_task",
+        "work_class",
+        "consequences"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "1.0"
+        },
+        "contract_class": {
+          "const": "ephemeral"
+        },
+        "durable_task": {
+          "const": false
+        },
+        "work_class": {
+          "const": "disposable-answer"
+        },
+        "consequences": {
+          "$ref": "#/$defs/no_consequences"
+        }
+      }
+    },
+    {
+      "title": "Compact contract",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "contract_class",
+        "durable_task",
+        "work_class",
+        "consequences",
+        "risk_flags",
+        "outcome",
+        "owner",
+        "next_action",
+        "artifact_or_source",
+        "resume_point",
+        "completion_check"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "1.0"
+        },
+        "contract_class": {
+          "const": "compact"
+        },
+        "durable_task": {
+          "const": true
+        },
+        "work_class": {
+          "enum": [
+            "internal-read-only",
+            "reversible-internal"
+          ]
+        },
+        "consequences": {
+          "$ref": "#/$defs/no_consequences"
+        },
+        "risk_flags": {
+          "$ref": "#/$defs/risk_flags",
+          "maxItems": 0
+        },
+        "outcome": {
+          "$ref": "#/$defs/text"
+        },
+        "owner": {
+          "$ref": "#/$defs/text"
+        },
+        "next_action": {
+          "$ref": "#/$defs/text"
+        },
+        "artifact_or_source": {
+          "$ref": "#/$defs/text"
+        },
+        "resume_point": {
+          "$ref": "#/$defs/text"
+        },
+        "completion_check": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    {
+      "title": "Full contract",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "contract_class",
+        "durable_task",
+        "work_class",
+        "consequences",
+        "risk_flags",
+        "outcome",
+        "owner",
+        "next_action",
+        "artifact_or_source",
+        "resume_point",
+        "completion_check",
+        "target",
+        "scope",
+        "exclusions",
+        "requirement_version",
+        "criteria",
+        "authority",
+        "dependencies",
+        "limits",
+        "checkpoint",
+        "recovery",
+        "evidence_method",
+        "reviewer",
+        "return_contract"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "1.0"
+        },
+        "contract_class": {
+          "const": "full"
+        },
+        "durable_task": {
+          "const": true
+        },
+        "work_class": {
+          "$ref": "#/$defs/work_class",
+          "not": {
+            "const": "disposable-answer"
+          }
+        },
+        "consequences": {
+          "$ref": "#/$defs/consequences"
+        },
+        "risk_flags": {
+          "$ref": "#/$defs/risk_flags"
+        },
+        "outcome": {
+          "$ref": "#/$defs/text"
+        },
+        "owner": {
+          "$ref": "#/$defs/text"
+        },
+        "next_action": {
+          "$ref": "#/$defs/text"
+        },
+        "artifact_or_source": {
+          "$ref": "#/$defs/text"
+        },
+        "resume_point": {
+          "$ref": "#/$defs/text"
+        },
+        "completion_check": {
+          "$ref": "#/$defs/text"
+        },
+        "target": {
+          "$ref": "#/$defs/text"
+        },
+        "scope": {
+          "$ref": "#/$defs/text"
+        },
+        "exclusions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "requirement_version": {
+          "$ref": "#/$defs/text"
+        },
+        "criteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "authority": {
+          "$ref": "#/$defs/text"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "limits": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean"
+            ]
+          }
+        },
+        "checkpoint": {
+          "$ref": "#/$defs/text"
+        },
+        "recovery": {
+          "$ref": "#/$defs/text"
+        },
+        "evidence_method": {
+          "$ref": "#/$defs/text"
+        },
+        "reviewer": {
+          "$ref": "#/$defs/text"
+        },
+        "return_contract": {
+          "$ref": "#/$defs/text"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "external_write": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "risk_flags": {
+                "contains": {
+                  "const": "external-write"
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "risk_flags": {
+                "not": {
+                  "contains": {
+                    "const": "external-write"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "delegated": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "risk_flags": {
+                "contains": {
+                  "const": "delegated"
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "risk_flags": {
+                "not": {
+                  "contains": {
+                    "const": "delegated"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "dependency": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "risk_flags": {
+                "contains": {
+                  "const": "dependency"
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "risk_flags": {
+                "not": {
+                  "contains": {
+                    "const": "dependency"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "sensitive_data": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "risk_flags": {
+                "contains": {
+                  "const": "sensitive-data"
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "risk_flags": {
+                "not": {
+                  "contains": {
+                    "const": "sensitive-data"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "material_cost": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "risk_flags": {
+                "contains": {
+                  "const": "material-cost"
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "risk_flags": {
+                "not": {
+                  "contains": {
+                    "const": "material-cost"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "cancellation_risk": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "risk_flags": {
+                "contains": {
+                  "const": "cancellation-risk"
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "risk_flags": {
+                "not": {
+                  "contains": {
+                    "const": "cancellation-risk"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "long_lived_follow_up": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "risk_flags": {
+                "contains": {
+                  "const": "long-lived-follow-up"
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "risk_flags": {
+                "not": {
+                  "contains": {
+                    "const": "long-lived-follow-up"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "internal-read-only"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "$ref": "#/$defs/no_consequences"
+              },
+              "risk_flags": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "reversible-internal"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "$ref": "#/$defs/no_consequences"
+              },
+              "risk_flags": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "message-send"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "external_write": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "invitation"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "external_write": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "deployment"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "external_write": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "purchase"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "external_write": {
+                    "const": true
+                  },
+                  "material_cost": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "access-change"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "external_write": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "credential-change"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "external_write": {
+                    "const": true
+                  },
+                  "sensitive_data": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "production-action"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "external_write": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "bulk-write"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "external_write": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "deletion"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "external_write": {
+                    "const": true
+                  },
+                  "cancellation_risk": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "delegated-work"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "delegated": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "work_class": {
+                "const": "durable-schedule"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "dependency": {
+                    "const": true
+                  },
+                  "long_lived_follow_up": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

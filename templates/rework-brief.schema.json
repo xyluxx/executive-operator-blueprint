@@ -1,0 +1,10 @@
+{
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/rework-brief.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object", "additionalProperties": false, "required": ["rework_version", "task_id", "submission_id", "failed_criteria", "preserved_passes"],
+  "properties": {
+    "rework_version": {"const": "1"}, "task_id": {"type": "string", "minLength": 1}, "submission_id": {"type": "string", "minLength": 1},
+    "failed_criteria": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["criterion_id", "reason", "required_action"], "properties": {"criterion_id": {"type": "string"}, "reason": {"type": "string"}, "required_action": {"type": "string"}}}},
+    "preserved_passes": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/business-lane-preservation.schema.json",
+  "title": "Business lane preservation matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "lanes"],
+  "properties": {
+    "version": {"const": "1.0.0"},
+    "lanes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["email", "calendar", "meetings", "crm", "marketing", "channels", "remote-desktop", "credentials", "documents", "storage", "website-reliability", "recovery"],
+      "properties": {
+        "email": {"$ref": "#/$defs/lane"}, "calendar": {"$ref": "#/$defs/lane"},
+        "meetings": {"$ref": "#/$defs/lane"}, "crm": {"$ref": "#/$defs/lane"},
+        "marketing": {"$ref": "#/$defs/lane"}, "channels": {"$ref": "#/$defs/lane"},
+        "remote-desktop": {"$ref": "#/$defs/lane"}, "credentials": {"$ref": "#/$defs/lane"},
+        "documents": {"$ref": "#/$defs/lane"}, "storage": {"$ref": "#/$defs/lane"},
+        "website-reliability": {"$ref": "#/$defs/lane"}, "recovery": {"$ref": "#/$defs/lane"}
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyList": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "lane": {
+      "type": "object", "additionalProperties": false,
+      "required": ["enabled", "status", "account_identity", "permissions", "approval", "proof", "failure_behavior", "disable", "recovery"],
+      "properties": {
+        "enabled": {"const": false},
+        "status": {"enum": ["Native", "Blueprint", "Bundled", "Configured", "Verified", "Optional", "Planned", "Blocked"]},
+        "account_identity": {"type": "string", "minLength": 1},
+        "permissions": {"$ref": "#/$defs/nonEmptyList"},
+        "approval": {"type": "string", "minLength": 1},
+        "proof": {"$ref": "#/$defs/nonEmptyList"},
+        "failure_behavior": {"type": "string", "minLength": 1},
+        "disable": {"type": "string", "minLength": 1},
+        "recovery": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

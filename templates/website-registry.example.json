@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "sites": [{
+    "id": "example-production", "name": "Example production site", "enabled": false,
+    "host": "example.com", "environment": "production", "health_url": "https://example.com/health",
+    "credential_reference": "vault://websites/example-production/deploy", "credential_principal": "deploy-example-production", "owner": "website-owner",
+    "repair_policy": "restart-known-service", "notification_route": null, "status": "planned",
+    "healthy_codes": [200], "attempts": 2, "failure_cycles": 2
+  }]
+}

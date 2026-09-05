@@ -1,0 +1,11 @@
+{
+  "schema_version": 1, "handoff_id": "handoff-example", "incident_id": "incident-example",
+  "site_id": "example-production", "host": "example.com", "checkpoint": "confirmed-unhealthy",
+  "credential_reference": "vault://websites/example-production/deploy", "credential_principal": "deploy-example-production", "allowed_action": "restart-known-service",
+  "approval_reference": "approval://operator-control/example", "approval_version": 1, "operator_task_reference": "kanban://task/example", "task_version": 1, "requirement_version": 1, "operation_key": "incident-example:restart-known-service:v1",
+  "limits": {"max_attempts": 2, "max_elapsed_seconds": 60},
+  "acceptance": {"health_url": "https://example.com/health", "healthy_codes": [200]},
+  "worker": {"status": "planned", "id": "synthetic-worker"}, "credential": {"status": "blocked"},
+  "approval": {"status": "blocked"}, "notification": {"status": "blocked", "route": null},
+  "enforcement": {"status": "planned"}, "dispatch_enabled": false
+}

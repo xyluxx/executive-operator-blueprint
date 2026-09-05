@@ -1,0 +1,28 @@
+# Audits the single public v1.1.0 release without embedding a self-referential commit hash.
+schema_version: 2
+repository:
+  owner: xyluxx
+  name: executive-operator-blueprint
+  visibility: public
+  default_branch: main
+refs:
+  branches: {allowed: [main], required: [main]}
+  tags: {allowed: [v1.1.0], required: [v1.1.0]}
+  releases: {allowed: [v1.1.0], required: [v1.1.0]}
+release:
+  tag: v1.1.0
+  commit_count: {mode: baseline, expected: 1}
+  content_digest:
+    algorithm: sha256-path-mode-content-v1
+    excluded_paths: [contracts/public-release-policy.yaml]
+    sha256: 7d0b797a9beb325240ef876127ce94f687ec935c01c18eef64d1b59038e12fc6 # pragma: allowlist secret -- final public content digest excludes this policy file
+  checksum_asset: executive-operator-blueprint-1.1.0.tar.gz.sha256
+  checksum_entry: executive-operator-blueprint-v1.1.0-source.tar.gz
+identities:
+  allowed_contributors: [xyluxx]
+  allowed_collaborators: [xyluxx]
+  allowed_git_identities:
+    - {name: Xylux, email: 119265803+xyluxx@users.noreply.github.com}
+public_surface:
+  readme: README.md
+  assets: [assets/executive-operator.svg, assets/executive-operator-mobile.svg]

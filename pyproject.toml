@@ -1,0 +1,44 @@
+[project]
+name = "executive-operator-blueprint-for-hermes"
+version = "1.1.0"
+description = "Executive Operator Blueprint for Hermes, an implementation-grade third-party profile distribution"
+requires-python = ">=3.10"
+dependencies = [
+  "PyYAML>=6,<7",
+  "jsonschema>=4,<5",
+  "cryptography>=50,<51",
+]
+
+[project.optional-dependencies]
+secure-credentials = [
+  "fastapi>=0.141,<1",
+  "uvicorn>=0.29,<1",
+  "cryptography>=50,<51",
+  "pydantic>=2,<3",
+  "httpx>=0.27,<1",
+  "anyio>=4,<5",
+]
+test = [
+  "pytest>=8,<10",
+]
+all = [
+  "fastapi>=0.141,<1",
+  "uvicorn>=0.29,<1",
+  "cryptography>=50,<51",
+  "pydantic>=2,<3",
+  "httpx>=0.27,<1",
+  "anyio>=4,<5",
+  "pytest>=8,<10",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+  "ignore:Using `httpx` with `starlette.testclient` is deprecated:DeprecationWarning",
+  "ignore:The anyio.abc.BlockingPortal alias is deprecated:DeprecationWarning",
+]
+
+[tool.pyright]
+pythonVersion = "3.10"
+extraPaths = ["tools/secure-credentials", "plugins/operator-control", "tools/operator-control"]

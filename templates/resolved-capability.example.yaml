@@ -1,0 +1,26 @@
+schema_version: 1
+capability_id: executive-assistant
+owner: principal
+status: blocked
+selected_route:
+  kind: skill
+  locator: selected-skill-identifier
+  version: null
+  immutable_ref: null
+  sha256: null
+  license: null
+  provenance: unresolved until source inspection
+  reviewed_at: "2026-01-01T00:00:00Z"
+account_identity: null
+credential_reference: null
+permissions: [read approved account]
+data_boundary: named account and folders
+approval_policy: exact approval before external writes
+tests:
+  - name: source and dependency review
+    kind: synthetic
+    status: blocked
+    evidence: null
+fallback: work read-only from owner-provided exports
+disable_path: do not install or connect the unresolved route
+resolved_at: "2026-01-01T00:00:00Z"

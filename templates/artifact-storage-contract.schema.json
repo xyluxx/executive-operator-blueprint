@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/artifact-storage-contract.schema.json",
+  "title": "Provider-neutral artifact storage contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "status", "connected", "adapters", "temporary_share"],
+  "properties": {
+    "version": {"type": "integer", "const": 1},
+    "status": {"type": "string", "enum": ["optional", "configured", "verified", "blocked"]},
+    "connected": {"type": "boolean"},
+    "adapters": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/adapter"}
+    },
+    "temporary_share": {"$ref": "#/$defs/sharePolicy"}
+  },
+  "$defs": {
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["implementation", "account_id", "target_id", "synthetic", "upload_idempotency", "bound_operation_key", "provider_object_id", "checksum_version_readback", "size_readback", "permission_scope", "retention", "delete", "revoke", "disable", "unknown_effect_reconciliation"],
+      "properties": {
+        "implementation": {"enum": ["real-local", "synthetic-fake"]},
+        "account_id": {"type": "string", "minLength": 1},
+        "target_id": {"type": "string", "minLength": 1},
+        "synthetic": {"type": "boolean"},
+        "upload_idempotency": {"type": "boolean", "const": true},
+        "bound_operation_key": {"type": "boolean", "const": true},
+        "provider_object_id": {"type": "boolean", "const": true},
+        "checksum_version_readback": {"type": "boolean", "const": true},
+        "size_readback": {"type": "boolean", "const": true},
+        "permission_scope": {"type": "boolean", "const": true},
+        "retention": {"type": "boolean", "const": true},
+        "delete": {"type": "boolean", "const": true},
+        "revoke": {"type": "boolean", "const": true},
+        "disable": {"type": "boolean", "const": true},
+        "unknown_effect_reconciliation": {"type": "boolean", "const": true}
+      }
+    },
+    "sharePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["default_enabled", "reject_sensitive", "explicit_target", "authentication_required", "expiry_required", "revocation_required", "cleanup_required", "https_verification_required", "starts_listener"],
+      "properties": {
+        "default_enabled": {"type": "boolean", "const": false},
+        "reject_sensitive": {"type": "boolean", "const": true},
+        "explicit_target": {"type": "boolean", "const": true},
+        "authentication_required": {"type": "boolean", "const": true},
+        "expiry_required": {"type": "boolean", "const": true},
+        "revocation_required": {"type": "boolean", "const": true},
+        "cleanup_required": {"type": "boolean", "const": true},
+        "https_verification_required": {"type": "boolean", "const": true},
+        "starts_listener": {"type": "boolean", "const": false}
+      }
+    }
+  }
+}

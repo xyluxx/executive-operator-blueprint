@@ -1,0 +1,27 @@
+{
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/extension-registry.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hermes Executive Operator Extension Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "purpose", "scope", "risk", "approval_policy", "version", "lifecycle", "tests"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "type": {
+      "enum": ["field", "workflow_step", "duty", "report", "source_adapter", "automation", "skill", "plugin", "mcp", "domain_object"]
+    },
+    "purpose": {"type": "string", "minLength": 1},
+    "scope": {"type": "string", "minLength": 1},
+    "configuration": {"type": "object", "propertyNames": {"not": {"pattern": "(?i)(password|token|secret|api[_-]?key|credential[_-]?value)"}}},
+    "risk": {"enum": ["low", "medium", "high", "prohibited"]},
+    "approval_policy": {"enum": ["automatic_internal", "proposal_required", "exact_action_required", "never"]},
+    "version": {"type": "integer", "minimum": 1},
+    "migration_status": {"enum": ["not_required", "planned", "tested", "applied", "rolled_back"]},
+    "rollback": {"type": ["string", "null"]},
+    "tests": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "lifecycle": {"enum": ["proposed", "approved", "testing", "active", "paused", "retired", "rejected"]},
+    "created_at": {"type": ["string", "null"], "format": "date-time"},
+    "created_by": {"type": ["string", "null"]},
+    "evidence": {"type": ["string", "null"]}
+  }
+}

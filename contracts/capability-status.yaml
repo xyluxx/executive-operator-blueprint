@@ -1,0 +1,22 @@
+version: 1.0.0
+statuses: [Native, Blueprint, Bundled, Configured, Verified, Optional, Planned, Blocked]
+canonical_meanings:
+  Native: Supplied by the tested Hermes platform or host surface; not necessarily configured.
+  Blueprint: Behavior, boundary, or conformance contract documented by this repository.
+  Bundled: An artifact shipped in this repository; not necessarily selected or enabled.
+  Configured: A private deployment selected a route, account, permissions, and policy; verification is not implied.
+  Verified: The selected deployment passed its current end-to-end contract, including real readback where required.
+  Optional: Not required by the base operator and disabled unless selected.
+  Planned: Intended work without a complete bundled and configured implementation.
+  Blocked: A named dependency, permission, decision, enforcement point, or test prevents use.
+forbidden_synonyms:
+  Built-in: Native
+  Active: Configured
+  Enabled: Configured
+  Ready: Verified
+rules:
+  - Status values are case-sensitive and may not be replaced by synonyms.
+  - Native, Blueprint, Bundled, and Optional describe provenance or selection posture, not live proof.
+  - Configured requires an exact selected route, account identity, permissions, approval policy, and disable path.
+  - Verified requires current deployment-specific end-to-end evidence and exact target readback when applicable.
+  - Synthetic or fake-adapter proof never promotes a private provider lane to Verified.

@@ -1,0 +1,60 @@
+version: 1.0.0
+lanes:
+  email: &provider_lane
+    enabled: false
+    status: Optional
+    account_identity: Exact account and tenant selected during private onboarding.
+    permissions: [Narrow read scope; draft and send scopes remain separate.]
+    approval: External sends require exact protected approval.
+    proof: [Known-message read, approved-send exact recipient and content readback, wrong-account denial.]
+    failure_behavior: Fail closed; unknown send effects reconcile before retry.
+    disable: Disable the adapter and revoke provider authorization.
+    recovery: Reconcile pending effects and restore the prior pinned adapter or manual lane.
+  calendar:
+    <<: *provider_lane
+    permissions: [Calendar read; event write and invitation permissions remain separate.]
+    proof: [Timezone-aware read, approved event write and exact readback, cancellation proof.]
+  meetings:
+    <<: *provider_lane
+    permissions: [Selected meeting metadata or transcript read only.]
+    proof: [Known meeting retrieval, source identity, deduplicated observation.]
+  crm:
+    <<: *provider_lane
+    permissions: [Selected object read; scoped create or update only when approved.]
+    proof: [Identity lookup, duplicate prevention, scoped write and exact object readback.]
+  marketing:
+    <<: *provider_lane
+    permissions: [Approved account read; campaign mutation excluded by default.]
+    proof: [Account and timezone identity, totals reconciliation, mutation denial.]
+  channels:
+    <<: *provider_lane
+    permissions: [Selected channel receive; send scope separately approved.]
+    proof: [Inbound identity, deduplicated delivery, approved outbound readback.]
+  remote-desktop:
+    <<: *provider_lane
+    permissions: [Named host and session; no unattended consequential write by default.]
+    proof: [Host identity, session boundary, disconnect and access-revocation proof.]
+  credentials:
+    <<: *provider_lane
+    status: Blocked
+    permissions: [Named broker operation only; plaintext unavailable to the model.]
+    proof: [Wrong-principal denial, opaque receipt, revocation and broker-outage denial.]
+  documents:
+    <<: *provider_lane
+    status: Bundled
+    permissions: [Approved source read and scoped artifact write.]
+    proof: [Format signature, reopen and expected-content verification, sensitivity check.]
+  storage:
+    <<: *provider_lane
+    permissions: [Exact container and object prefix only.]
+    proof: [Upload, checksum and version readback, permission test, revoke and disable.]
+  website-reliability:
+    <<: *provider_lane
+    status: Planned
+    permissions: [Declared registry read and bounded approved repair only.]
+    proof: [Registry reconciliation, health and incident chain, post-repair verification.]
+  recovery:
+    <<: *provider_lane
+    status: Blueprint
+    permissions: [Read backups; restore only to the exact approved isolated target.]
+    proof: [Backup integrity, isolated restore, disable and rollback rehearsal.]

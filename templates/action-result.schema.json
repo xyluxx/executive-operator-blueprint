@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/action-result.schema.json",
+  "title": "Protected action result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "operation_key", "effect", "provider_id", "readback"],
+  "properties": {
+    "schema_version": {"const": 1}, "operation_key": {"type": "string", "minLength": 1},
+    "effect": {"enum": ["confirmed-success", "confirmed-failure", "unknown"]},
+    "provider_id": {"type": ["string", "null"]}, "readback": {"type": ["object", "null"]},
+    "reconciliation_required": {"type": "boolean"}
+  }
+}

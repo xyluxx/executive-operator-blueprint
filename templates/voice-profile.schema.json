@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/xyluxx/executive-operator-blueprint/main/templates/voice-profile.schema.json",
+  "title": "Private voice profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "owner_id", "private", "opt_in", "storage_policy", "lifecycle_policy", "source_policy", "base", "overlays", "review", "correction_policy", "send_policy"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "owner_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "private": {"const": true},
+    "opt_in": {
+      "type": "object", "additionalProperties": false,
+      "required": ["approved", "approved_at"],
+      "properties": {
+        "approved": {"const": true},
+        "approved_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "storage_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["location", "access", "encryption_at_rest_required", "public_export_excluded", "audit_access_required"],
+      "properties": {
+        "location": {"const": "private-profile-state"},
+        "access": {"const": "owner-and-authorized-operator-only"},
+        "encryption_at_rest_required": {"const": true},
+        "public_export_excluded": {"const": true},
+        "audit_access_required": {"const": true}
+      }
+    },
+    "lifecycle_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["retention_days", "delete_on_owner_request", "revoke_access_on_opt_out", "verify_deletion"],
+      "properties": {
+        "retention_days": {"type": "integer", "minimum": 1, "maximum": 365},
+        "delete_on_owner_request": {"const": true},
+        "revoke_access_on_opt_out": {"const": true},
+        "verify_deletion": {"const": true}
+      }
+    },
+    "source_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_approved_sent_messages_only", "retain_raw_messages", "raw_message_retention", "dispose_source_after_extraction", "verify_source_disposal"],
+      "properties": {
+        "owner_approved_sent_messages_only": {"const": true},
+        "retain_raw_messages": {"const": false},
+        "raw_message_retention": {"const": "none"},
+        "dispose_source_after_extraction": {"const": true},
+        "verify_source_disposal": {"const": true}
+      }
+    },
+    "base": {"$ref": "#/$defs/patternSet"},
+    "overlays": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "business": {"$ref": "#/$defs/patternSet"},
+        "personal": {"$ref": "#/$defs/patternSet"},
+        "school": {"$ref": "#/$defs/patternSet"},
+        "legal": {"$ref": "#/$defs/patternSet"},
+        "internal": {"$ref": "#/$defs/patternSet"}
+      },
+      "minProperties": 1
+    },
+    "review": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_review_required", "paired_draft_test_required", "status"],
+      "properties": {
+        "owner_review_required": {"const": true},
+        "paired_draft_test_required": {"const": true},
+        "status": {"enum": ["pending", "approved", "revision-required"]}
+      }
+    },
+    "correction_policy": {"const": "update-relevant-overlay"},
+    "send_policy": {"const": "exact-approval-required"}
+  },
+  "$defs": {
+    "patternSet": {
+      "type": "object", "additionalProperties": false,
+      "required": ["directness", "paragraph_length", "formality", "warmth", "emoji_use", "closing_style"],
+      "properties": {
+        "directness": {"enum": ["direct", "balanced", "indirect"]},
+        "paragraph_length": {"enum": ["short", "medium"]},
+        "formality": {"enum": ["casual", "neutral", "formal"]},
+        "warmth": {"enum": ["reserved", "neutral", "warm"]},
+        "emoji_use": {"enum": ["none", "sparing"]},
+        "closing_style": {"enum": ["none", "brief", "warm", "formal"]}
+      }
+    }
+  }
+}
